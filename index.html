@@ -1,224 +1,213 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KR KHAN LOTTERY</title>
+<meta name="theme-color" content="#090d18">
+<title>Lottery Sambad - Live Results</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#090b12;color:#fff;font-family:Arial,sans-serif}
-header{padding:22px 16px;background:linear-gradient(120deg,#171321,#30200b);border-bottom:1px solid #a77b28}
-header h1{margin:0;color:#f5c65b;font-size:24px}
-header p{margin:7px 0 0;color:#bbb;font-size:12px}
-nav{display:flex;gap:8px;padding:12px;background:#111522;position:sticky;top:0}
-nav button{flex:1;padding:11px 4px;border:1px solid #38313a;border-radius:9px;background:#1b2030;color:white}
-nav button.active{background:#d49b32;color:#111;font-weight:bold}
-main{padding:14px;max-width:650px;margin:auto}
-.card{background:#151a27;border:1px solid #34303a;border-radius:15px;padding:16px;margin-bottom:14px}
-h2{font-size:18px;color:#f4c45b;margin:0 0 14px}
-.draws{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-.draw{background:#202638;padding:14px 5px;border-radius:12px;text-align:center;border:1px solid #464052}
-.draw strong{display:block;color:#f5c65b;font-size:15px}
-.number{font-size:23px;font-weight:bold;margin:12px 0;color:#fff}
-.small{font-size:11px;color:#aaa}
-input,select{width:100%;padding:13px;margin:6px 0 12px;border-radius:9px;border:1px solid #454454;background:#0d1220;color:white}
-.action{width:100%;padding:13px;background:#d49b32;color:#17120a;border:0;border-radius:9px;font-weight:bold;margin-top:6px}
-.secondary{background:#293247;color:white}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,sans-serif;
+  background:#090d18;color:#fff;
+  padding:18px;
+}
+.container{max-width:850px;margin:auto}
+header{text-align:center;padding:25px 10px}
+.logo{font-size:29px;font-weight:900;color:#f5c45e}
+header p{color:#aab2c4;margin-top:8px}
+.date{color:#f5c45e;margin-top:12px;font-size:14px}
+.tabs{display:flex;gap:10px;margin:15px 0}
+.tab{
+ flex:1;padding:14px 5px;border:1px solid #30394d;
+ background:#151d2d;color:white;border-radius:10px;
+ font-weight:bold;cursor:pointer
+}
+.tab.active{background:#d99d35;color:#111;border-color:#d99d35}
+.card{
+ background:#141c2b;border:1px solid #29354b;
+ border-radius:15px;padding:18px;margin-bottom:16px
+}
+.card h2{font-size:20px;margin-bottom:12px}
+.status{color:#8ee0a4;font-size:13px;margin-bottom:15px}
+.first{
+ text-align:center;background:#202b40;
+ border:1px solid #b98c3d;border-radius:12px;
+ padding:20px;margin-bottom:18px
+}
+.first small{color:#f5c45e}
+.first .number{font-size:32px;font-weight:900;margin:12px 0}
+.amount{font-size:21px;color:#f5c45e;font-weight:bold}
+.prize{margin-top:14px}
+.prize h3{font-size:16px;color:#f5c45e;margin-bottom:10px}
+.numbers{display:flex;flex-wrap:wrap;gap:8px}
+.number-box{
+ background:#26344b;padding:9px 12px;
+ border-radius:7px;font-weight:bold;font-size:14px
+}
+.error{
+ background:#3a2225;border:1px solid #91444b;
+ padding:15px;border-radius:10px;color:#ffb3b3
+}
+.info{color:#9ba9bd;font-size:12px;margin-top:10px}
+.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.action{
+ display:inline-block;padding:11px 15px;
+ background:#d99d35;color:#111;text-decoration:none;
+ border-radius:8px;font-weight:bold;font-size:13px
+}
 .hidden{display:none}
-.result-row{padding:12px 0;border-bottom:1px solid #303342}
-a{color:#f5c65b}
-footer{text-align:center;color:#777;padding:25px;font-size:12px}
+footer{text-align:center;color:#718096;padding:25px;font-size:12px}
+#message{text-align:center;color:#aab2c4;padding:12px}
 </style>
 </head>
 <body>
+<div class="container">
+
 <header>
-<h1>👑 KR KHAN LOTTERY</h1>
-<p>Lottery Results • Daily Updates • Result History</p>
+ <div class="logo">LOTTERY SAMBAD</div>
+ <p>Daily Lottery Results</p>
+ <div class="date" id="date">Loading date...</div>
 </header>
 
-<nav>
-<button class="active" id="homeTab" onclick="showPage('home')">Home</button>
-<button id="historyTab" onclick="showPage('history')">History</button>
-<button id="adminTab" onclick="showPage('admin')">Admin</button>
-</nav>
-
-<main>
-<section id="homePage">
-<div class="card">
-<h2>🏆 Today's Results</h2>
-<div class="small" id="todayDate"></div>
-<div class="draws" id="todayResults">
-<div class="draw"><strong>1 PM</strong><div class="number">--</div><span class="small">Loading...</span></div>
-<div class="draw"><strong>6 PM</strong><div class="number">--</div><span class="small">Loading...</span></div>
-<div class="draw"><strong>8 PM</strong><div class="number">--</div><span class="small">Loading...</span></div>
-</div>
-</div>
-<div class="card">
-<h2>📢 Latest Update</h2>
-<p class="small">Results are displayed when published. Please verify results with the official source.</p>
-</div>
-</section>
-
-<section id="historyPage" class="hidden">
-<div class="card">
-<h2>📅 Result History</h2>
-<div id="historyList">Loading history...</div>
-</div>
-</section>
-
-<section id="adminPage" class="hidden">
-<div class="card" id="loginBox">
-<h2>🔐 Admin Login</h2>
-<input id="adminEmail" type="email" placeholder="Admin email">
-<input id="adminPassword" type="password" placeholder="Password">
-<button class="action" onclick="login()">Login</button>
-<p class="small" id="loginMessage"></p>
+<div class="tabs">
+ <button class="tab active" data-slot="1pm">1 PM</button>
+ <button class="tab" data-slot="6pm">6 PM</button>
+ <button class="tab" data-slot="8pm">8 PM</button>
 </div>
 
-<div class="card hidden" id="adminPanel">
-<h2>✍️ Add Lottery Result</h2>
-<label class="small">Result Date</label>
-<input type="date" id="resultDate">
-<label class="small">Draw Time</label>
-<select id="drawSlot">
-<option value="1pm">1 PM</option>
-<option value="6pm">6 PM</option>
-<option value="8pm">8 PM</option>
-</select>
-<label class="small">Winning Number</label>
-<input id="winningNumber" placeholder="Enter winning number">
-<label class="small">PDF URL (optional)</label>
-<input id="pdfUrl" type="url" placeholder="https://example.com/result.pdf">
-<button class="action" onclick="saveResult()">Save Result</button>
-<button class="action secondary" onclick="logout()">Logout</button>
-<p class="small" id="saveMessage"></p>
+<div id="result"></div>
+<div id="message">Loading results...</div>
+
+<footer>
+ Lottery Sambad Result Viewer | Data from results.json
+</footer>
 </div>
-</section>
-</main>
 
-<footer>KR KHAN LOTTERY © 2026</footer>
+<script>
+const resultBox = document.getElementById("result");
+const message = document.getElementById("message");
+const dateBox = document.getElementById("date");
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import {
- getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import {
- getDatabase, ref, set, get
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+let allData = null;
+let currentSlot = "1pm";
 
-const firebaseConfig = {
- apiKey: "AIzaSyCdbU9mGDrhvuGVBzrWv8gY1Nv2FnnCMs8",
- authDomain: "muskan-e1e76.firebaseapp.com",
- databaseURL: "https://muskan-e1e76-default-rtdb.firebaseio.com",
- projectId: "muskan-e1e76",
- storageBucket: "muskan-e1e76.firebasestorage.app",
- messagingSenderId: "504107917046",
- appId: "1:504107917046:web:13922f1bf2a6a513abd6d7"
-};
+function money(value){
+ return "₹" + Number(value || 0).toLocaleString("en-IN");
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+function make(tag, cls, value){
+ const el = document.createElement(tag);
+ if(cls) el.className = cls;
+ if(value !== undefined) el.textContent = value;
+ return el;
+}
 
-const today = new Date().toLocaleDateString("en-CA");
-document.getElementById("todayDate").textContent = today;
-document.getElementById("resultDate").value = today;
-
-window.showPage = function(page){
- ["home","history","admin"].forEach(p=>{
-  document.getElementById(p+"Page").classList.toggle("hidden",p!==page);
-  document.getElementById(p+"Tab").classList.toggle("active",p===page);
+function showResult(slot){
+ currentSlot = slot;
+ document.querySelectorAll(".tab").forEach(btn=>{
+   btn.classList.toggle("active",btn.dataset.slot===slot);
  });
- if(page==="home") loadToday();
- if(page==="history") loadHistory();
-};
 
-async function loadToday(){
- const box=document.getElementById("todayResults");
- const slots=["1pm","6pm","8pm"];
- let html="";
- for(const slot of slots){
-  let snap=await get(ref(db,`results/${today}/${slot}`));
-  let data=snap.val();
-  html+=`<div class="draw"><strong>${slot.toUpperCase()}</strong>
-  <div class="number">${data?.number || "--"}</div>
-  <span class="small">${data ? "Result published" : "Waiting for result"}</span>
-  ${data?.pdf ? `<br><a href="${safeUrl(data.pdf)}" target="_blank" rel="noopener">PDF</a>` : ""}
-  </div>`;
+ resultBox.replaceChildren();
+ message.textContent = "";
+
+ if(!allData || !allData.results){
+   message.textContent = "Result data is not available.";
+   return;
  }
- box.innerHTML=html;
-}
 
-function safeUrl(value){
- try{
-  const u=new URL(value);
-  return ["https:","http:"].includes(u.protocol)?u.href:"#";
- }catch(e){return "#";}
-}
+ const item = allData.results[slot];
 
-async function loadHistory(){
- const list=document.getElementById("historyList");
- const snap=await get(ref(db,"results"));
- const data=snap.val();
- if(!data){list.textContent="No results available yet.";return;}
- let html="";
- Object.keys(data).sort().reverse().forEach(date=>{
-  ["1pm","6pm","8pm"].forEach(slot=>{
-   const r=data[date]?.[slot];
-   if(r){
-    html+=`<div class="result-row"><b>${date}</b> · ${slot.toUpperCase()}<div class="number">${r.number || "--"}</div>
-    ${r.pdf?`<a href="${safeUrl(r.pdf)}" target="_blank" rel="noopener">Open PDF</a>`:""}
-    </div>`;
-   }
-  });
+ if(!item || item.error || !item.success || !item.data){
+   const error = make("div","error",
+     slot.toUpperCase()+" Result is not available yet. Please check again later.");
+   resultBox.appendChild(error);
+   return;
+ }
+
+ const data = item.data;
+ const card = make("section","card");
+
+ card.appendChild(make("h2", "", data.name || "Lottery Result"));
+ card.appendChild(make("div","status",
+   "● "+(data.status || "Published")+" | "+(data.draw_time || slot)));
+
+ if(data.first){
+   const first = make("div","first");
+   first.appendChild(make("small","","FIRST PRIZE"));
+   first.appendChild(make("div","number",
+     (data.first.series || "")+" "+(data.first.number || "")));
+   first.appendChild(make("div","amount",money(data.first.amount)));
+   first.appendChild(make("div","info","Draw No. "+(data.draw_no || "-")));
+   card.appendChild(first);
+ }
+
+ (data.prizes || []).forEach(prize=>{
+   const section = make("div","prize");
+   section.appendChild(make("h3","",
+     prize.label+" - "+money(prize.amount)));
+
+   const numbers = make("div","numbers");
+   (prize.numbers || []).forEach(number=>{
+     numbers.appendChild(make("span","number-box",number));
+   });
+
+   section.appendChild(numbers);
+   if(prize.note) section.appendChild(make("p","info",prize.note));
+   card.appendChild(section);
  });
- list.innerHTML=html||"No results available yet.";
+
+ if(data.files){
+   const buttons = make("div","buttons");
+   if(data.files.jpg){
+     const a=make("a","action","View Result Image");
+     a.href=data.files.jpg;a.target="_blank";a.rel="noopener";
+     buttons.appendChild(a);
+   }
+   if(data.files.pdf){
+     const a=make("a","action","Download PDF");
+     a.href=data.files.pdf;a.target="_blank";a.rel="noopener";
+     buttons.appendChild(a);
+   }
+   card.appendChild(buttons);
+ }
+
+ if(data.video && data.video.watch){
+   const a=make("a","action","Watch Draw Video");
+   a.href=data.video.watch;a.target="_blank";a.rel="noopener";
+   a.style.marginTop="12px";
+   a.style.display="inline-block";
+   card.appendChild(a);
+ }
+
+ resultBox.appendChild(card);
 }
 
-window.login=async function(){
- const email=document.getElementById("adminEmail").value.trim();
- const password=document.getElementById("adminPassword").value;
- const msg=document.getElementById("loginMessage");
+async function loadResults(){
+ message.textContent="Loading latest results...";
  try{
-  await signInWithEmailAndPassword(auth,email,password);
-  msg.textContent="Login successful.";
- }catch(e){msg.textContent="Login failed: "+e.message;}
-};
+   const response=await fetch("./results.json?t="+Date.now(),{
+     cache:"no-store"
+   });
+   if(!response.ok) throw new Error("HTTP "+response.status);
+   allData=await response.json();
 
-onAuthStateChanged(auth,user=>{
- document.getElementById("loginBox").classList.toggle("hidden",!!user);
- document.getElementById("adminPanel").classList.toggle("hidden",!user);
+   dateBox.textContent="Result Date: "+(allData.date || "Not available");
+   showResult(currentSlot);
+ }catch(error){
+   resultBox.replaceChildren();
+   message.textContent="Unable to load results. Please refresh.";
+   console.error(error);
+ }
+}
+
+document.querySelectorAll(".tab").forEach(btn=>{
+ btn.addEventListener("click",()=>showResult(btn.dataset.slot));
 });
 
-window.saveResult=async function(){
- const user=auth.currentUser;
- const msg=document.getElementById("saveMessage");
- if(!user){msg.textContent="Please login first.";return;}
- const date=document.getElementById("resultDate").value;
- const slot=document.getElementById("drawSlot").value;
- const number=document.getElementById("winningNumber").value.trim();
- const pdf=document.getElementById("pdfUrl").value.trim();
- if(!date||!number){msg.textContent="Date and winning number are required.";return;}
- if(pdf && !/^https?:\/\//i.test(pdf)){msg.textContent="Please enter a valid PDF URL.";return;}
- try{
-  await set(ref(db,`results/${date}/${slot}`),{
-   number, pdf, updatedAt:Date.now()
-  });
-  msg.textContent="Result saved successfully!";
-  document.getElementById("winningNumber").value="";
-  document.getElementById("pdfUrl").value="";
-  loadToday();
- }catch(e){msg.textContent="Save failed: "+e.message;}
-};
-
-window.logout=async function(){
- await signOut(auth);
- document.getElementById("saveMessage").textContent="Logged out.";
-};
-
-loadToday();
+loadResults();
+setInterval(loadResults,60000);
 </script>
 </body>
 </html>
