@@ -1,0 +1,14 @@
+{
+  "date": "26-11-2026",
+  "results": {
+    "1pm": {
+      "error": "HTTP Error 401: Unauthorized"
+    },
+    "6pm": {
+      "error": "HTTP Error 401: Unauthorized"
+    },
+    "8pm": {
+      "error": "HTTP Error 401: Unauthorized"
+    }
+  }
+}
