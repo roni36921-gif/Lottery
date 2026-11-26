@@ -1,74 +1,116 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090d18">
-<title>Lottery Sambad - Live Results</title>
+<title>KR KHAN - Lottery Sambad</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:Arial,sans-serif;
-  background:#090d18;color:#fff;
-  padding:18px;
+ font-family:Arial,sans-serif;
+ background:#090d18;color:#fff;padding:15px;
 }
 .container{max-width:850px;margin:auto}
-header{text-align:center;padding:25px 10px}
-.logo{font-size:29px;font-weight:900;color:#f5c45e}
-header p{color:#aab2c4;margin-top:8px}
+header{text-align:center;padding:24px 10px}
+.logo{font-size:32px;font-weight:900;color:#f5c45e}
+.subtitle{color:#aab2c4;margin-top:8px;font-size:13px}
 .date{color:#f5c45e;margin-top:12px;font-size:14px}
-.tabs{display:flex;gap:10px;margin:15px 0}
+
+.ad-box{
+ width:100%;display:flex;justify-content:center;
+ align-items:center;overflow:hidden;margin:16px auto;
+ min-height:60px;
+}
+.ad-banner{max-width:100%}
+
+.tabs{display:flex;gap:10px;margin:18px 0}
 .tab{
  flex:1;padding:14px 5px;border:1px solid #30394d;
  background:#151d2d;color:white;border-radius:10px;
- font-weight:bold;cursor:pointer
+ font-weight:bold;cursor:pointer;
 }
-.tab.active{background:#d99d35;color:#111;border-color:#d99d35}
+.tab.active{background:#d99d35;color:#111}
+
 .card{
  background:#141c2b;border:1px solid #29354b;
- border-radius:15px;padding:18px;margin-bottom:16px
+ border-radius:15px;padding:18px;margin-bottom:16px;
 }
 .card h2{font-size:20px;margin-bottom:12px}
 .status{color:#8ee0a4;font-size:13px;margin-bottom:15px}
+
 .first{
  text-align:center;background:#202b40;
  border:1px solid #b98c3d;border-radius:12px;
- padding:20px;margin-bottom:18px
+ padding:20px;margin-bottom:18px;
 }
 .first small{color:#f5c45e}
 .first .number{font-size:32px;font-weight:900;margin:12px 0}
 .amount{font-size:21px;color:#f5c45e;font-weight:bold}
-.prize{margin-top:14px}
+
+.prize{margin-top:17px}
 .prize h3{font-size:16px;color:#f5c45e;margin-bottom:10px}
 .numbers{display:flex;flex-wrap:wrap;gap:8px}
 .number-box{
  background:#26344b;padding:9px 12px;
- border-radius:7px;font-weight:bold;font-size:14px
+ border-radius:7px;font-weight:bold;font-size:14px;
 }
+.result-image{
+ width:100%;height:auto;display:block;
+ border-radius:10px;margin-top:14px;
+ border:1px solid #39455a;
+}
+.image-title{color:#f5c45e;margin-top:22px;font-size:17px}
 .error{
  background:#3a2225;border:1px solid #91444b;
- padding:15px;border-radius:10px;color:#ffb3b3
+ padding:15px;border-radius:10px;color:#ffb3b3;
 }
 .info{color:#9ba9bd;font-size:12px;margin-top:10px}
-.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
 .action{
  display:inline-block;padding:11px 15px;
  background:#d99d35;color:#111;text-decoration:none;
- border-radius:8px;font-weight:bold;font-size:13px
+ border-radius:8px;font-weight:bold;font-size:13px;
+ margin-top:12px;margin-right:7px;
 }
-.hidden{display:none}
+.refresh{
+ display:block;width:100%;padding:13px;
+ background:#202b40;color:#fff;border:1px solid #39455a;
+ border-radius:10px;margin:12px 0;cursor:pointer;
+ font-weight:bold;
+}
 footer{text-align:center;color:#718096;padding:25px;font-size:12px}
 #message{text-align:center;color:#aab2c4;padding:12px}
 </style>
 </head>
+
 <body>
 <div class="container">
 
 <header>
- <div class="logo">LOTTERY SAMBAD</div>
- <p>Daily Lottery Results</p>
+ <div class="logo">KR KHAN 👈</div>
+ <p class="subtitle">LOTTERY SAMBAD • LIVE RESULTS</p>
  <div class="date" id="date">Loading date...</div>
 </header>
+
+<!-- 468 x 60 BANNER AD -->
+<div class="ad-box">
+ <div class="ad-banner">
+  <script>
+   atOptions = {
+    'key':'a5b80e67d65f773f39f9edd52d25fdda',
+    'format':'iframe',
+    'height':60,
+    'width':468,
+    'params':{}
+   };
+  </script>
+  <script data-cfasync="false"
+   src="https://bicea.org/22/a5b80e67d65f773f39f9edd52d25fdda">
+  </script>
+ </div>
+</div>
 
 <div class="tabs">
  <button class="tab active" data-slot="1pm">1 PM</button>
@@ -76,109 +118,143 @@ footer{text-align:center;color:#718096;padding:25px;font-size:12px}
  <button class="tab" data-slot="8pm">8 PM</button>
 </div>
 
+<!-- 300 x 250 AD -->
+<div class="ad-box" style="min-height:250px">
+ <div>
+  <script>
+   atOptions = {
+    'key':'b166761d8a76989d6fa88b8d15605b87',
+    'format':'iframe',
+    'height':250,
+    'width':300,
+    'params':{}
+   };
+  </script>
+  <script data-cfasync="false"
+   src="https://bicea.org/22/b166761d8a76989d6fa88b8d15605b87">
+  </script>
+ </div>
+</div>
+
 <div id="result"></div>
 <div id="message">Loading results...</div>
 
+<button class="refresh" onclick="loadResults()">
+ ↻ REFRESH RESULTS
+</button>
+
 <footer>
- Lottery Sambad Result Viewer | Data from results.json
+ KR KHAN 👈 | Lottery Sambad Result Viewer
+ <p style="margin-top:8px">Results are displayed from the connected API data.</p>
 </footer>
 </div>
 
 <script>
-const resultBox = document.getElementById("result");
-const message = document.getElementById("message");
-const dateBox = document.getElementById("date");
+const resultBox=document.getElementById("result");
+const message=document.getElementById("message");
+const dateBox=document.getElementById("date");
 
-let allData = null;
-let currentSlot = "1pm";
+let allData=null;
+let currentSlot="1pm";
 
 function money(value){
- return "₹" + Number(value || 0).toLocaleString("en-IN");
+ return "₹"+Number(value||0).toLocaleString("en-IN");
 }
 
-function make(tag, cls, value){
- const el = document.createElement(tag);
- if(cls) el.className = cls;
- if(value !== undefined) el.textContent = value;
+function make(tag,cls,value){
+ const el=document.createElement(tag);
+ if(cls)el.className=cls;
+ if(value!==undefined)el.textContent=value;
  return el;
 }
 
+function addLink(parent,url,label){
+ if(!url)return;
+ const a=make("a","action",label);
+ a.href=url;
+ a.target="_blank";
+ a.rel="noopener noreferrer";
+ parent.appendChild(a);
+}
+
 function showResult(slot){
- currentSlot = slot;
+ currentSlot=slot;
+
  document.querySelectorAll(".tab").forEach(btn=>{
-   btn.classList.toggle("active",btn.dataset.slot===slot);
+  btn.classList.toggle("active",btn.dataset.slot===slot);
  });
 
  resultBox.replaceChildren();
- message.textContent = "";
+ message.textContent="";
 
- if(!allData || !allData.results){
-   message.textContent = "Result data is not available.";
-   return;
+ if(!allData||!allData.results){
+  message.textContent="Result data not available.";
+  return;
  }
 
- const item = allData.results[slot];
+ const item=allData.results[slot];
 
- if(!item || item.error || !item.success || !item.data){
-   const error = make("div","error",
-     slot.toUpperCase()+" Result is not available yet. Please check again later.");
-   resultBox.appendChild(error);
-   return;
+ if(!item||item.error||!item.success||!item.data){
+  resultBox.appendChild(make("div","error",
+   slot.toUpperCase()+" Result is not available yet. Please check again later."));
+  return;
  }
 
- const data = item.data;
- const card = make("section","card");
+ const data=item.data;
+ const card=make("section","card");
 
- card.appendChild(make("h2", "", data.name || "Lottery Result"));
+ card.appendChild(make("h2","",data.name||"Lottery Result"));
  card.appendChild(make("div","status",
-   "● "+(data.status || "Published")+" | "+(data.draw_time || slot)));
+  "● "+(data.status||"Published")+" | "+(data.draw_time||slot)));
 
  if(data.first){
-   const first = make("div","first");
-   first.appendChild(make("small","","FIRST PRIZE"));
-   first.appendChild(make("div","number",
-     (data.first.series || "")+" "+(data.first.number || "")));
-   first.appendChild(make("div","amount",money(data.first.amount)));
-   first.appendChild(make("div","info","Draw No. "+(data.draw_no || "-")));
-   card.appendChild(first);
+  const first=make("div","first");
+  first.appendChild(make("small","","FIRST PRIZE"));
+  first.appendChild(make("div","number",
+   (data.first.series||"")+" "+(data.first.number||"")));
+  first.appendChild(make("div","amount",money(data.first.amount)));
+  first.appendChild(make("div","info","Draw No. "+(data.draw_no||"-")));
+  card.appendChild(first);
  }
 
- (data.prizes || []).forEach(prize=>{
-   const section = make("div","prize");
-   section.appendChild(make("h3","",
-     prize.label+" - "+money(prize.amount)));
+ (data.prizes||[]).forEach(prize=>{
+  const section=make("div","prize");
+  section.appendChild(make("h3","",
+   prize.label+" - "+money(prize.amount)));
 
-   const numbers = make("div","numbers");
-   (prize.numbers || []).forEach(number=>{
-     numbers.appendChild(make("span","number-box",number));
-   });
+  const numbers=make("div","numbers");
+  (prize.numbers||[]).forEach(number=>{
+   numbers.appendChild(make("span","number-box",number));
+  });
 
-   section.appendChild(numbers);
-   if(prize.note) section.appendChild(make("p","info",prize.note));
-   card.appendChild(section);
+  section.appendChild(numbers);
+
+  if(prize.note){
+   section.appendChild(make("p","info",prize.note));
+  }
+  card.appendChild(section);
  });
 
- if(data.files){
-   const buttons = make("div","buttons");
-   if(data.files.jpg){
-     const a=make("a","action","View Result Image");
-     a.href=data.files.jpg;a.target="_blank";a.rel="noopener";
-     buttons.appendChild(a);
-   }
-   if(data.files.pdf){
-     const a=make("a","action","Download PDF");
-     a.href=data.files.pdf;a.target="_blank";a.rel="noopener";
-     buttons.appendChild(a);
-   }
-   card.appendChild(buttons);
+ if(data.files&&data.files.jpg){
+  card.appendChild(make("h3","image-title","OFFICIAL RESULT IMAGE"));
+
+  const img=document.createElement("img");
+  img.className="result-image";
+  img.src=data.files.jpg;
+  img.alt=data.name+" Result Image";
+  img.loading="lazy";
+  img.onerror=()=>{
+   img.replaceWith(make("p","error","Result image could not be loaded."));
+  };
+  card.appendChild(img);
  }
 
- if(data.video && data.video.watch){
-   const a=make("a","action","Watch Draw Video");
-   a.href=data.video.watch;a.target="_blank";a.rel="noopener";
-   a.style.marginTop="12px";
-   a.style.display="inline-block";
-   card.appendChild(a);
+ if(data.files&&data.files.pdf){
+  addLink(card,data.files.pdf,"DOWNLOAD PDF");
+ }
+
+ if(data.video&&data.video.watch){
+  addLink(card,data.video.watch,"WATCH DRAW VIDEO");
  }
 
  resultBox.appendChild(card);
@@ -186,28 +262,38 @@ function showResult(slot){
 
 async function loadResults(){
  message.textContent="Loading latest results...";
- try{
-   const response=await fetch("./results.json?t="+Date.now(),{
-     cache:"no-store"
-   });
-   if(!response.ok) throw new Error("HTTP "+response.status);
-   allData=await response.json();
 
-   dateBox.textContent="Result Date: "+(allData.date || "Not available");
-   showResult(currentSlot);
+ try{
+  const response=await fetch("./results.json?t="+Date.now(),{
+   cache:"no-store"
+  });
+
+  if(!response.ok){
+   throw new Error("HTTP "+response.status);
+  }
+
+  allData=await response.json();
+
+  dateBox.textContent="Result Date: "+(allData.date||"Not available");
+
+  showResult(currentSlot);
+
  }catch(error){
-   resultBox.replaceChildren();
-   message.textContent="Unable to load results. Please refresh.";
-   console.error(error);
+  resultBox.replaceChildren();
+  message.textContent="Unable to load results. Please refresh.";
+  console.error(error);
  }
 }
 
 document.querySelectorAll(".tab").forEach(btn=>{
- btn.addEventListener("click",()=>showResult(btn.dataset.slot));
+ btn.addEventListener("click",()=>{
+  showResult(btn.dataset.slot);
+ });
 });
 
 loadResults();
 setInterval(loadResults,60000);
 </script>
+
 </body>
 </html>
