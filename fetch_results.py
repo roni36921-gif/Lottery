@@ -13,7 +13,10 @@ from urllib.parse import urlparse
 
 
 TOKEN = os.environ["LOTTERY_API_KEY"]
+
 RESULT_FILE = "results.json"
+TEMP_FILE = "results.tmp"
+
 API_URL = "https://api.sambad.com/v2/dear/result"
 
 SLOTS = ["1pm", "6pm", "8pm"]
@@ -27,24 +30,38 @@ now = datetime.now(IST)
 today = now.strftime("%d-%m-%Y")
 
 
+# -----------------------------
+# LOAD EXISTING RESULTS
+# -----------------------------
+
 def load_results():
+
     if os.path.exists(RESULT_FILE):
+
         try:
             with open(RESULT_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                if isinstance(data, dict):
-                    return data
+
+            if isinstance(data, dict):
+                return data
+
         except Exception as error:
             print("JSON load error:", error)
 
     return {}
 
 
+# -----------------------------
+# IMAGE URL VALIDATION
+# -----------------------------
+
 def get_image_url(files):
+
     if not isinstance(files, dict):
         return ""
 
     for key, value in files.items():
+
         if not isinstance(value, str):
             continue
 
@@ -56,9 +73,14 @@ def get_image_url(files):
             if parsed.scheme not in ("http", "https"):
                 continue
 
+            if not parsed.netloc:
+                continue
+
             extension = os.path.splitext(parsed.path)[1].lower()
 
-            if extension in (".jpg", ".jpeg", ".png", ".webp"):
+            if extension in (
+                ".jpg", ".jpeg", ".png", ".webp"
+            ):
                 return url
 
             if str(key).lower() in (
@@ -72,34 +94,87 @@ def get_image_url(files):
     return ""
 
 
+# -----------------------------
+# NORMALIZE API IMAGE
+# -----------------------------
+
 def normalize_item(item):
+
     if not isinstance(item, dict):
         return item
 
     item = item.copy()
+
     data = item.get("data")
 
     if not isinstance(data, dict):
         return item
 
     data = data.copy()
+
     files = data.get("files") or {}
 
     if isinstance(files, dict):
+
         files = files.copy()
+
         image_url = get_image_url(files)
 
         if image_url:
-            # Keep compatibility with the existing HTML.
             files["jpg"] = image_url
 
         data["files"] = files
 
     item["data"] = data
+
     return item
 
 
-def has_image(item):
+# -----------------------------
+# CHECK DATE AND SLOT
+# -----------------------------
+
+def validate_result(item, slot):
+
+    if not isinstance(item, dict):
+        return False
+
+    if item.get("success") is not True:
+        return False
+
+    data = item.get("data")
+
+    if not isinstance(data, dict):
+        return False
+
+    api_date = str(data.get("date", "")).strip()
+    api_slot = str(data.get("slot", "")).strip().lower()
+
+    if api_date != today:
+        print(
+            slot,
+            "Rejected: API date mismatch:",
+            api_date
+        )
+        return False
+
+    if api_slot != slot:
+        print(
+            slot,
+            "Rejected: API slot mismatch:",
+            api_slot
+        )
+        return False
+
+    return True
+
+
+# -----------------------------
+# CHECK PUBLISHED IMAGE
+# -----------------------------
+
+def has_image(item, slot=None):
+
     if not isinstance(item, dict):
         return False
 
@@ -108,33 +183,61 @@ def has_image(item):
 
     data = item.get("data") or {}
 
+    if not isinstance(data, dict):
+        return False
+
+    if slot is not None:
+
+        if str(data.get("date", "")).strip() != today:
+            return False
+
+        if str(data.get("slot", "")).strip().lower() != slot:
+            return False
+
     if str(data.get("status", "")).lower() == "upcoming":
         return False
 
     return bool(get_image_url(data.get("files") or {}))
 
 
+# -----------------------------
+# RETRY DELAY
+# -----------------------------
+
 def retry_delay(error, attempt):
+
     if isinstance(error, urllib.error.HTTPError):
+
         retry_after = error.headers.get("Retry-After")
 
         if retry_after:
+
             try:
                 return min(120, max(1, int(retry_after)))
+
             except ValueError:
+
                 try:
                     target = parsedate_to_datetime(retry_after)
+
                     seconds = (
                         target - datetime.now(target.tzinfo)
                     ).total_seconds()
+
                     return min(120, max(1, int(seconds)))
+
                 except Exception:
                     pass
 
     return min(60, 5 * (2 ** attempt))
 
 
+# -----------------------------
+# FETCH API RESULT
+# -----------------------------
+
 def fetch_slot(slot):
+
     params = urllib.parse.urlencode({
         "date": today,
         "slot": slot,
@@ -150,10 +253,14 @@ def fetch_slot(slot):
     )
 
     for attempt in range(MAX_RETRIES):
+
         try:
+
             with urllib.request.urlopen(
-                request, timeout=30
+                request,
+                timeout=30
             ) as response:
+
                 result = json.loads(
                     response.read().decode("utf-8")
                 )
@@ -161,9 +268,17 @@ def fetch_slot(slot):
             if not isinstance(result, dict):
                 raise ValueError("Invalid API response")
 
-            return normalize_item(result)
+            result = normalize_item(result)
+
+            if not validate_result(result, slot):
+                raise ValueError(
+                    "API date or slot validation failed"
+                )
+
+            return result
 
         except urllib.error.HTTPError as error:
+
             if error.code != 429 and error.code < 500:
                 raise
 
@@ -171,27 +286,44 @@ def fetch_slot(slot):
                 raise
 
             delay = retry_delay(error, attempt)
+
             print(
-                slot, "HTTP", error.code,
-                "- retrying after", delay, "seconds"
+                slot,
+                "HTTP",
+                error.code,
+                "- retrying after",
+                delay,
+                "seconds"
             )
+
             time.sleep(delay)
 
-        except (urllib.error.URLError, TimeoutError) as error:
+        except (
+            urllib.error.URLError,
+            TimeoutError
+        ) as error:
+
             if attempt == MAX_RETRIES - 1:
                 raise
 
             delay = retry_delay(error, attempt)
+
             print(
-                slot, "Network error - retrying after",
-                delay, "seconds"
+                slot,
+                "Network error - retrying after",
+                delay,
+                "seconds"
             )
+
             time.sleep(delay)
 
     raise RuntimeError("API retries exhausted")
 
 
-# Load existing data
+# -----------------------------
+# LOAD DATA
+# -----------------------------
+
 results = load_results()
 
 if not isinstance(results.get("history"), dict):
@@ -203,61 +335,95 @@ if not isinstance(results.get("results"), dict):
 history = results["history"]
 current = results["results"]
 
-# Archive previous date's published results
+
+# -----------------------------
+# ARCHIVE PREVIOUS DATE
+# -----------------------------
+
 old_date = results.get("date")
 
 if old_date and old_date != today:
+
     for slot, item in current.items():
-        if slot in SLOTS and has_image(item):
+
+        if slot in SLOTS and has_image(item, slot=None):
+
             history.setdefault(old_date, {})
             history[old_date][slot] = item
 
     current = {}
     results["results"] = current
 
+    print("Previous date archived:", old_date)
 
-# Fetch slots one by one
+
+# -----------------------------
+# FETCH ALL THREE SLOTS
+# -----------------------------
+
 for index, slot in enumerate(SLOTS):
 
     old_item = current.get(slot)
 
     try:
+
         new_item = fetch_slot(slot)
 
-        if has_image(new_item):
-            current[slot] = new_item
-            print(slot, "Published result image saved")
+        if has_image(new_item, slot):
 
-        elif has_image(old_item):
-            print(slot, "Keeping previous published result")
-
-        elif new_item.get("success"):
             current[slot] = new_item
-            print(slot, "Waiting for published result")
+
+            print(
+                slot,
+                "Published result image saved"
+            )
+
+        elif has_image(old_item, slot):
+
+            print(
+                slot,
+                "Keeping previous published image"
+            )
 
         else:
-            print(slot, "API returned unsuccessful response")
+
+            current[slot] = new_item
+
+            print(
+                slot,
+                "Waiting for published image"
+            )
 
     except Exception as error:
-        print(slot, "API error:", str(error))
 
+        print(
+            slot,
+            "API error:",
+            str(error)
+        )
+
+        # Never delete an existing published image.
         if old_item is None:
             current[slot] = {
                 "success": False,
                 "error": str(error)
             }
 
-    # Avoid sending requests too quickly
+    # Delay between API requests.
     if index < len(SLOTS) - 1:
         time.sleep(REQUEST_DELAY)
 
 
-# Save JSON
+# -----------------------------
+# SAVE RESULTS SAFELY
+# -----------------------------
+
 results["date"] = today
 results["results"] = current
 results["history"] = history
 
-with open(RESULT_FILE, "w", encoding="utf-8") as f:
+with open(TEMP_FILE, "w", encoding="utf-8") as f:
+
     json.dump(
         results,
         f,
@@ -265,5 +431,12 @@ with open(RESULT_FILE, "w", encoding="utf-8") as f:
         ensure_ascii=False
     )
 
-print("All three slots checked successfully.")
+os.replace(TEMP_FILE, RESULT_FILE)
+
+
+print("--------------------------------")
+print("LOTTERY UPDATE COMPLETED")
 print("Date:", today)
+print("Slots:", ", ".join(SLOTS))
+print("History preserved")
+print("--------------------------------")
