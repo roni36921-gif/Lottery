@@ -3,17 +3,20 @@ name: Lottery Automatic Result Update
 
 on:
   schedule:
-    # 1 PM - IST
-    - cron: "35,40,45,50,55 7 * * *"
-    - cron: "*/5 8 * * *"
+    # 1:30 PM IST - Check for 3 hours
+    - cron: "35-55/5 8 * * *"
+    - cron: "*/5 9-10 * * *"
+    - cron: "0-30/5 11 * * *"
 
-    # 6 PM - IST
-    - cron: "35,40,45,50,55 12 * * *"
-    - cron: "*/5 13 * * *"
+    # 6:30 PM IST - Check for 3 hours
+    - cron: "35-55/5 13 * * *"
+    - cron: "*/5 14-15 * * *"
+    - cron: "0-30/5 16 * * *"
 
-    # 8 PM - IST
-    - cron: "35,40,45,50,55 14 * * *"
-    - cron: "*/5 15 * * *"
+    # 8:30 PM IST - Check for 3 hours
+    - cron: "35-55/5 15 * * *"
+    - cron: "*/5 16-17 * * *"
+    - cron: "0-30/5 18 * * *"
 
   workflow_dispatch:
 
@@ -50,4 +53,3 @@ jobs:
           git add results.json
           git diff --cached --quiet || git commit -m "Update Lottery Results"
           git push
-          
