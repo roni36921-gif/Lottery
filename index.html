@@ -18,54 +18,131 @@
   --border:rgba(214,173,85,.25);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
-.container{width:94%;max-width:1050px;margin:auto}
-header{background:linear-gradient(135deg,#111,#080808);border-bottom:1px solid var(--border);padding:18px 0}
-.brand{display:flex;align-items:center;justify-content:center;gap:12px}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+}
+.container{width:94%;max-width:950px;margin:auto}
+header{
+  background:linear-gradient(135deg,#17130b,#080808);
+  border-bottom:1px solid var(--border);
+  padding:20px 0;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+}
 .logo{width:65px;height:65px;flex-shrink:0}
-.brand-name{font-size:29px;font-weight:900;letter-spacing:3px;color:var(--gold2);text-shadow:0 0 15px rgba(214,173,85,.3)}
-.brand-sub{font-size:10px;letter-spacing:4px;color:var(--gold);margin-top:5px;text-align:center}
-.tagline{text-align:center;color:#aaa;font-size:10px;letter-spacing:2px;margin-top:13px}
-.top-info{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:18px 0;color:var(--muted);font-size:12px}
+.brand-name{
+  font-size:29px;
+  font-weight:900;
+  letter-spacing:3px;
+  color:var(--gold2);
+  text-shadow:0 0 15px rgba(214,173,85,.3);
+}
+.brand-sub{
+  font-size:10px;
+  letter-spacing:4px;
+  color:var(--gold);
+  margin-top:5px;
+  text-align:center;
+}
+.tagline{
+  text-align:center;
+  color:#aaa;
+  font-size:10px;
+  letter-spacing:2px;
+  margin-top:13px;
+}
+.top-info{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:18px 0;
+  color:var(--muted);
+  font-size:12px;
+}
 .status{color:#5de69b}
-.ad-box{min-height:65px;display:flex;align-items:center;justify-content:center;margin:15px auto;overflow:hidden;text-align:center}
-.ad-label{color:#555;font-size:10px}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:20px 0}
-.tab{border:1px solid var(--border);background:#151515;color:#aaa;padding:14px 5px;border-radius:9px;font-size:14px;font-weight:bold;cursor:pointer}
-.tab.active{color:#111;background:linear-gradient(135deg,var(--gold2),var(--gold));border-color:var(--gold)}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:18px;margin-bottom:16px}
-.section-title{color:var(--gold2);font-size:16px;font-weight:bold;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.draw-heading{text-align:center;color:var(--gold2);font-size:20px;margin:10px 0}
-.draw-meta{text-align:center;color:var(--muted);font-size:12px;line-height:1.8}
-.first-prize{background:linear-gradient(135deg,#33250d,#17120a);border:1px solid var(--gold);border-radius:12px;text-align:center;padding:22px 10px;margin:16px 0}
-.first-prize small{color:var(--gold2);letter-spacing:2px}
-.first-number{font-size:clamp(30px,8vw,48px);font-weight:900;color:#ffe5a0;margin:12px 0;overflow-wrap:anywhere}
-.first-amount{color:#fff;font-weight:bold}
-.prize-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.prize-card{background:#1c1c1c;border:1px solid #303030;padding:13px;border-radius:9px;min-width:0}
-.prize-card h4{color:var(--gold);font-size:13px;margin-bottom:7px}
-.prize-amount{color:#fff;font-size:13px;margin-bottom:8px}
-.prize-numbers{color:#eee;font-size:14px;line-height:1.8;overflow-wrap:anywhere}
-.search-area{margin:15px 0}
-.search-area input{width:100%;padding:13px;background:#090909;border:1px solid var(--border);border-radius:8px;color:white;outline:none;font-size:14px}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
-.btn{border:1px solid var(--border);background:#202020;color:var(--gold2);padding:10px 14px;border-radius:7px;font-weight:bold;cursor:pointer;font-size:12px}
-.btn.primary{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#111}
-.result-media img{width:100%;display:block;border-radius:8px;margin-top:12px;border:1px solid var(--border)}
-.pdf-frame{width:100%;height:600px;border:1px solid var(--border);border-radius:8px;background:#fff;margin-top:12px}
-.video-link{display:inline-block;color:var(--gold2);text-decoration:none;padding:12px;border:1px solid var(--border);border-radius:8px;margin-top:10px}
-.empty{text-align:center;color:#999;padding:25px 10px;line-height:1.8}
 .error{color:#ff7979}
-footer{text-align:center;padding:25px 10px;color:#888;border-top:1px solid var(--border);margin-top:25px;font-size:12px;line-height:2}
-footer strong{color:var(--gold)}
+.tabs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin:20px 0;
+}
+.tab{
+  border:1px solid var(--border);
+  background:#151515;
+  color:#aaa;
+  padding:15px 5px;
+  border-radius:9px;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.tab.active{
+  color:#111;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  border-color:var(--gold);
+}
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:12px;
+  margin-bottom:16px;
+}
+.image-wrap{
+  width:100%;
+  overflow:hidden;
+  border-radius:8px;
+  background:#090909;
+}
+.result-image{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:contain;
+  border-radius:8px;
+}
+.empty{
+  text-align:center;
+  color:#aaa;
+  padding:45px 12px;
+  line-height:1.8;
+  font-size:14px;
+}
 .loading{color:var(--gold2)}
+.ad-box{
+  min-height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:15px auto;
+  text-align:center;
+}
+.ad-label{color:#444;font-size:10px}
+footer{
+  text-align:center;
+  padding:25px 10px;
+  color:#888;
+  border-top:1px solid var(--border);
+  margin-top:25px;
+  font-size:12px;
+  line-height:2;
+}
+footer strong{color:var(--gold)}
 @media(max-width:550px){
   .container{width:93%}
   .brand-name{font-size:24px}
   .logo{width:55px;height:55px}
-  .panel{padding:14px}
-  .prize-grid{grid-template-columns:1fr}
-  .pdf-frame{height:480px}
+  .panel{padding:8px}
+  .tab{font-size:12px;padding:14px 3px}
 }
 </style>
 </head>
@@ -73,27 +150,34 @@ footer strong{color:var(--gold)}
 <body>
 
 <header>
-<div class="container">
-  <div class="brand">
-    <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#fff0b5"/>
-          <stop offset="45%" stop-color="#d6ad55"/>
-          <stop offset="100%" stop-color="#8c6425"/>
-        </linearGradient>
-      </defs>
-      <path d="M50 3 L94 27 L94 73 L50 97 L6 73 L6 27 Z" fill="none" stroke="url(#gold)" stroke-width="3"/>
-      <path d="M25 25 V75 M25 50 L52 25 M35 43 L58 75" fill="none" stroke="url(#gold)" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter"/>
-      <path d="M58 25 L76 75 M76 25 L58 75" fill="none" stroke="url(#gold)" stroke-width="5"/>
-    </svg>
-    <div>
-      <div class="brand-name">KR KHAN</div>
-      <div class="brand-sub">ROYAL RESULTS</div>
+  <div class="container">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#fff0b5"/>
+            <stop offset="45%" stop-color="#d6ad55"/>
+            <stop offset="100%" stop-color="#8c6425"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 3 L94 27 L94 73 L50 97 L6 73 L6 27 Z"
+          fill="none" stroke="url(#gold)" stroke-width="3"/>
+        <path d="M25 25 V75 M25 50 L52 25 M35 43 L58 75"
+          fill="none" stroke="url(#gold)" stroke-width="7"
+          stroke-linecap="square" stroke-linejoin="miter"/>
+        <path d="M58 25 L76 75 M76 25 L58 75"
+          fill="none" stroke="url(#gold)" stroke-width="5"/>
+      </svg>
+
+      <div>
+        <div class="brand-name">KR KHAN</div>
+        <div class="brand-sub">ROYAL RESULTS</div>
+      </div>
     </div>
+
+    <div class="tagline">PREMIUM • LIVE • DAILY UPDATES</div>
   </div>
-  <div class="tagline">PREMIUM • LIVE • DAILY UPDATES</div>
-</div>
 </header>
 
 <main class="container">
@@ -114,27 +198,13 @@ footer strong{color:var(--gold)}
   </div>
 
   <div class="panel">
-    <div class="section-title">LIVE RESULT STATUS</div>
-    <div id="resultArea" class="empty loading">Loading results...</div>
+    <div id="imageArea" class="empty loading">
+      Loading result image...
+    </div>
   </div>
 
   <div class="ad-box">
     <div class="ad-label">ADVERTISEMENT</div>
-  </div>
-
-  <div id="mediaArea"></div>
-
-  <div class="panel">
-    <div class="section-title">RESULT TOOLS</div>
-    <div class="search-area">
-      <input id="searchInput" type="search" placeholder="Search result number...">
-    </div>
-    <div class="actions">
-      <button class="btn primary" onclick="copyResults()">COPY NUMBERS</button>
-      <button class="btn" onclick="shareResults()">SHARE</button>
-      <button class="btn" onclick="window.print()">PRINT</button>
-      <button class="btn" onclick="loadResults()">↻ REFRESH</button>
-    </div>
   </div>
 
   <div class="top-info">
@@ -157,20 +227,11 @@ const IST_ZONE = "Asia/Kolkata";
 
 let allData = null;
 let activeSlot = "1pm";
-let currentResult = null;
+let lastImageKey = "";
 
-const resultArea = document.getElementById("resultArea");
-const mediaArea = document.getElementById("mediaArea");
+const imageArea = document.getElementById("imageArea");
 const connection = document.getElementById("connection");
-const searchInput = document.getElementById("searchInput");
 
-function safe(value){
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  })[char]);
-}
-
-// Get current date and time in Indian Standard Time
 function getISTParts(){
   const parts = new Intl.DateTimeFormat("en-GB",{
     timeZone:IST_ZONE,
@@ -194,48 +255,51 @@ function getISTDate(){
 
 function getYesterdayDate(){
   const p = getISTParts();
+
   const yesterday = new Date(Date.UTC(
     Number(p.year),
     Number(p.month)-1,
     Number(p.day)-1
   ));
 
-  const day = String(yesterday.getUTCDate()).padStart(2,"0");
-  const month = String(yesterday.getUTCMonth()+1).padStart(2,"0");
-  const year = yesterday.getUTCFullYear();
-
-  return `${day}-${month}-${year}`;
+  return [
+    String(yesterday.getUTCDate()).padStart(2,"0"),
+    String(yesterday.getUTCMonth()+1).padStart(2,"0"),
+    yesterday.getUTCFullYear()
+  ].join("-");
 }
 
 function isBeforeOnePM(){
-  const p = getISTParts();
-  return Number(p.hour) < 13;
+  return Number(getISTParts().hour) < 13;
 }
 
-function isPublished(item){
-  if(!item || item.success !== true || !item.data) return false;
+function getImageUrl(item, expectedDate){
+  if(!item || item.success !== true || !item.data) return "";
 
-  const d = item.data;
+  const data = item.data;
 
-  if(String(d.status || "").toLowerCase() === "upcoming"){
-    return false;
+  if(data.date !== expectedDate) return "";
+
+  if(String(data.status || "").toLowerCase() === "upcoming"){
+    return "";
   }
 
-  const hasFirst = d.first &&
-    typeof d.first === "object" &&
-    Object.keys(d.first).length > 0;
+  const url = data.files && data.files.jpg;
 
-  const hasPrizes = Array.isArray(d.prizes) && d.prizes.length > 0;
+  if(typeof url !== "string" || !url.trim()) return "";
 
-  const hasFiles = d.files &&
-    typeof d.files === "object" &&
-    Object.keys(d.files).length > 0;
-
-  return Boolean(hasFirst || hasPrizes || hasFiles);
+  try{
+    const parsed = new URL(url);
+    if(parsed.protocol !== "https:" && parsed.protocol !== "http:"){
+      return "";
+    }
+    return parsed.href;
+  }catch(error){
+    return "";
+  }
 }
 
-// Select today's result, or yesterday's published result before 1 PM
-function getCurrentData(){
+function getSelectedImage(){
   if(!allData) return null;
 
   const today = getISTDate();
@@ -244,21 +308,23 @@ function getCurrentData(){
   const results = allData.results || {};
   const history = allData.history || {};
 
-  let todayResult = null;
-
-  // Only accept current results if JSON belongs to today's date
+  // Today's image is shown only when JSON belongs to today.
   if(allData.date === today){
-    todayResult = results[activeSlot] || null;
+    const todayItem = results[activeSlot];
+    const todayImage = getImageUrl(todayItem,today);
+
+    if(todayImage){
+      return {
+        url:todayImage,
+        date:today,
+        source:"today"
+      };
+    }
   }
 
-  // Today's published result always has priority
-  if(isPublished(todayResult)){
-    return todayResult;
-  }
-
-  // Before 1 PM, show yesterday's published result if today's is not ready
+  // Before 1 PM, yesterday's image may remain visible.
   if(isBeforeOnePM()){
-    const yesterdayResult =
+    const oldItem =
       (history[yesterday] && history[yesterday][activeSlot]) ||
       (
         results[activeSlot] &&
@@ -268,19 +334,58 @@ function getCurrentData(){
           : null
       );
 
-    if(isPublished(yesterdayResult)){
-      return yesterdayResult;
+    const oldImage = getImageUrl(oldItem,yesterday);
+
+    if(oldImage){
+      return {
+        url:oldImage,
+        date:yesterday,
+        source:"history"
+      };
     }
   }
 
-  // After 1 PM, only today's result can be displayed
-  return todayResult;
+  // After 1 PM, yesterday's image is never displayed.
+  return null;
 }
 
-function formatNumbers(value){
-  if(Array.isArray(value)) return value.join(", ");
-  if(value === null || value === undefined) return "";
-  return String(value);
+function showEmpty(message){
+  imageArea.innerHTML =
+    '<div class="empty">' + message + '</div>';
+  lastImageKey = "";
+}
+
+function renderImage(){
+  const selected = getSelectedImage();
+
+  if(!selected){
+    showEmpty("Result image is not available yet.");
+    return;
+  }
+
+  const imageKey = selected.date + "|" + selected.url;
+
+  if(imageKey === lastImageKey) return;
+
+  lastImageKey = imageKey;
+
+  imageArea.innerHTML = "";
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "image-wrap";
+
+  const img = document.createElement("img");
+  img.className = "result-image";
+  img.alt = "KR KHAN Lottery Result Image";
+  img.loading = "eager";
+  img.src = selected.url;
+
+  img.onerror = function(){
+    showEmpty("Result image could not be loaded.");
+  };
+
+  wrapper.appendChild(img);
+  imageArea.appendChild(wrapper);
 }
 
 async function loadResults(){
@@ -288,9 +393,10 @@ async function loadResults(){
   connection.className = "loading";
 
   try{
-    const response = await fetch(API_URL + "?t=" + Date.now(),{
-      cache:"no-store"
-    });
+    const response = await fetch(
+      API_URL + "?t=" + Date.now(),
+      {cache:"no-store"}
+    );
 
     if(!response.ok){
       throw new Error("HTTP Error " + response.status);
@@ -299,16 +405,20 @@ async function loadResults(){
     const data = await response.json();
 
     if(!data || !data.results){
-      throw new Error("Invalid results.json format");
+      throw new Error("Invalid results.json");
     }
 
     allData = data;
+
+    connection.textContent = "● Connected";
+    connection.className = "status";
 
     document.getElementById("dateText").textContent =
       "Today's Date: " + getISTDate() + " (IST)";
 
     document.getElementById("lastUpdated").textContent =
-      "Last updated: " + new Intl.DateTimeFormat("en-IN",{
+      "Last updated: " +
+      new Intl.DateTimeFormat("en-IN",{
         timeZone:IST_ZONE,
         hour:"2-digit",
         minute:"2-digit",
@@ -316,246 +426,43 @@ async function loadResults(){
         hour12:true
       }).format(new Date());
 
-    connection.textContent = "● Connected";
-    connection.className = "status";
-
-    renderResult();
+    renderImage();
 
   }catch(error){
     connection.textContent = "● Connection Error";
     connection.className = "error";
 
     if(!allData){
-      resultArea.innerHTML =
-        '<div class="empty error">Unable to load results.<br>' +
-        safe(error.message) +
-        '<br>Check your results.json file.</div>';
+      showEmpty("Unable to load result image. Please try again later.");
     }
   }
 }
 
-function renderResult(){
-  const result = getCurrentData();
-  currentResult = result;
-
-  if(!result || result.success !== true || !result.data){
-    resultArea.innerHTML =
-      '<div class="empty">Result is not available for this draw yet.</div>';
-    mediaArea.innerHTML = "";
-    return;
-  }
-
-  const d = result.data;
-  const first = d.first || {};
-  const prizes = Array.isArray(d.prizes) ? d.prizes : [];
-
-  let html = `
-    <div class="draw-heading">${safe(d.name || "KR KHAN RESULT")}</div>
-    <div class="draw-meta">
-      Result Date: ${safe(d.date || "")}<br>
-      Draw Time: ${safe(d.draw_time || activeSlot)}<br>
-      ${d.draw_no ? "Draw No: " + safe(d.draw_no) : ""}
-      ${d.status ? "<br>Status: " + safe(d.status) : ""}
-    </div>
-  `;
-
-  if(first.number || first.series){
-    html += `
-      <div class="first-prize">
-        <small>FIRST PRIZE</small>
-        <div class="first-number">
-          ${safe(first.series || "")} ${safe(first.number || "")}
-        </div>
-        <div class="first-amount">${safe(first.amount || "")}</div>
-      </div>
-    `;
-  }
-
-  if(prizes.length){
-    html += `
-      <div class="section-title">ALL PRIZE RESULTS</div>
-      <div class="prize-grid">
-    `;
-
-    prizes.forEach(prize => {
-      html += `
-        <div class="prize-card">
-          <h4>${safe(prize.label || "Prize")}</h4>
-          <div class="prize-amount">${safe(prize.amount || "")}</div>
-          <div class="prize-numbers">${safe(formatNumbers(prize.numbers))}</div>
-          ${prize.note ? `<div class="draw-meta">${safe(prize.note)}</div>` : ""}
-        </div>
-      `;
+// Slot selection
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click",function(){
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.classList.remove("active");
     });
 
-    html += "</div>";
-  }
-
-  if(!first.number && !first.series && !prizes.length){
-    html += '<div class="empty">Result details are not available yet.</div>';
-  }
-
-  resultArea.innerHTML = html;
-  renderMedia(d);
-  searchInput.value = "";
-}
-
-function renderMedia(data){
-  let html = "";
-  const files = data.files || {};
-
-  if(files.jpg){
-    html += `
-      <div class="panel result-media">
-        <div class="section-title">RESULT IMAGE</div>
-        <img src="${safe(files.jpg)}" alt="Lottery result image" loading="lazy">
-      </div>
-    `;
-  }
-
-  if(files.pdf){
-    html += `
-      <div class="panel">
-        <div class="section-title">OFFICIAL RESULT PDF</div>
-        <iframe class="pdf-frame"
-          src="${safe(files.pdf)}#toolbar=0&navpanes=0"
-          title="Result PDF"></iframe>
-      </div>
-    `;
-  }
-
-  if(data.video && data.video.watch){
-    html += `
-      <div class="panel">
-        <div class="section-title">RESULT VIDEO</div>
-        <a class="video-link" href="${safe(data.video.watch)}"
-          target="_blank" rel="noopener">▶ WATCH RESULT VIDEO</a>
-      </div>
-    `;
-  }
-
-  mediaArea.innerHTML = html;
-}
-
-document.querySelectorAll(".tab").forEach(button => {
-  button.addEventListener("click",() => {
-    document.querySelectorAll(".tab").forEach(tab =>
-      tab.classList.remove("active")
-    );
-
-    button.classList.add("active");
-    activeSlot = button.dataset.slot;
-    renderResult();
+    this.classList.add("active");
+    activeSlot = this.dataset.slot;
+    lastImageKey = "";
+    renderImage();
   });
 });
 
-searchInput.addEventListener("input",function(){
-  const query = this.value.trim().toLowerCase();
-
-  document.querySelectorAll(".prize-card").forEach(card => {
-    card.style.display =
-      card.textContent.toLowerCase().includes(query) ? "" : "none";
-  });
-
-  const firstPrize = document.querySelector(".first-prize");
-  if(firstPrize){
-    firstPrize.style.display =
-      firstPrize.textContent.toLowerCase().includes(query) ? "" : "none";
-  }
-});
-
-function collectNumbers(){
-  const result = currentResult;
-  if(!result || !result.data) return "";
-
-  const d = result.data;
-  const lines = [];
-
-  lines.push("KR KHAN - ROYAL RESULTS");
-  lines.push("Date: " + (d.date || ""));
-  lines.push("Draw: " + activeSlot.toUpperCase());
-
-  if(d.first){
-    lines.push(
-      "First Prize: " +
-      (d.first.series || "") + " " +
-      (d.first.number || "") + " " +
-      (d.first.amount || "")
-    );
-  }
-
-  (d.prizes || []).forEach(prize => {
-    lines.push(
-      (prize.label || "Prize") + ": " +
-      formatNumbers(prize.numbers)
-    );
-  });
-
-  return lines.join("\n");
-}
-
-async function copyResults(){
-  const text = collectNumbers();
-
-  if(!text){
-    alert("No result available to copy.");
-    return;
-  }
-
-  try{
-    await navigator.clipboard.writeText(text);
-    alert("Results copied successfully!");
-  }catch(error){
-    const area = document.createElement("textarea");
-    area.value = text;
-    document.body.appendChild(area);
-    area.select();
-    document.execCommand("copy");
-    area.remove();
-    alert("Results copied!");
-  }
-}
-
-async function shareResults(){
-  const text = collectNumbers();
-
-  if(!text){
-    alert("No result available to share.");
-    return;
-  }
-
-  if(navigator.share){
-    try{
-      await navigator.share({
-        title:"KR KHAN - Royal Results",
-        text:text
-      });
-    }catch(error){}
-  }else{
-    window.open(
-      "https://wa.me/?text=" + encodeURIComponent(text),
-      "_blank"
-    );
-  }
-}
-
-// Refresh display at the exact 1 PM IST boundary
-function checkTimeBoundary(){
-  if(allData){
-    document.getElementById("dateText").textContent =
-      "Today's Date: " + getISTDate() + " (IST)";
-    renderResult();
-  }
-}
-
-// Initial load
+// Automatic refresh
 loadResults();
-
-// API refresh
 setInterval(loadResults,REFRESH_INTERVAL);
 
-// Check date/time boundary every 10 seconds
-setInterval(checkTimeBoundary,10000);
+// Check Indian date and 1 PM boundary every 10 seconds
+setInterval(() => {
+  document.getElementById("dateText").textContent =
+    "Today's Date: " + getISTDate() + " (IST)";
+
+  renderImage();
+},10000);
 
 </script>
 </body>
