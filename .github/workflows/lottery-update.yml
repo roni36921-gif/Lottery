@@ -1,10 +1,19 @@
+
 name: Lottery Automatic Result Update
 
 on:
   schedule:
-    - cron: "35 7 * * *"
-    - cron: "35 12 * * *"
-    - cron: "35 14 * * *"
+    # 1 PM - IST
+    - cron: "35,40,45,50,55 7 * * *"
+    - cron: "*/5 8 * * *"
+
+    # 6 PM - IST
+    - cron: "35,40,45,50,55 12 * * *"
+    - cron: "*/5 13 * * *"
+
+    # 8 PM - IST
+    - cron: "35,40,45,50,55 14 * * *"
+    - cron: "*/5 15 * * *"
 
   workflow_dispatch:
 
