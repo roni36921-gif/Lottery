@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,6 +100,64 @@ header{
   padding:12px;
   margin-bottom:16px;
 }
+
+/* WINNING NUMBER CARD */
+.winner-card{
+  display:none;
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+  padding:24px 12px;
+  margin-bottom:13px;
+  border:1px solid rgba(214,173,85,.55);
+  border-radius:12px;
+  background:
+    radial-gradient(ellipse at top,rgba(214,173,85,.17),transparent 70%),
+    linear-gradient(145deg,#201a0d,#0c0c0c 65%);
+  box-shadow:0 5px 25px rgba(0,0,0,.35);
+}
+.winner-card.visible{display:block}
+.winner-label{
+  color:var(--gold);
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+.winner-number{
+  color:var(--gold2);
+  font-size:clamp(30px,8vw,52px);
+  font-weight:900;
+  letter-spacing:3px;
+  line-height:1.2;
+  text-shadow:0 0 18px rgba(214,173,85,.35);
+  overflow-wrap:anywhere;
+}
+.winner-amount{
+  color:#fff;
+  font-size:clamp(23px,6vw,34px);
+  font-weight:900;
+  margin-top:13px;
+}
+.winner-prize{
+  display:inline-block;
+  margin-top:13px;
+  padding:7px 16px;
+  border-radius:30px;
+  border:1px solid var(--gold);
+  color:var(--gold2);
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:2px;
+  background:rgba(214,173,85,.09);
+}
+.winner-name{
+  color:#aaa;
+  font-size:11px;
+  margin-top:12px;
+  letter-spacing:1px;
+}
+
 .image-wrap{
   width:100%;
   overflow:hidden;
@@ -170,6 +229,8 @@ footer strong{color:var(--gold)}
   .ad-468 iframe{
     max-width:100% !important;
   }
+  .winner-card{padding:21px 8px}
+  .winner-number{letter-spacing:2px}
 }
 </style>
 </head>
@@ -239,9 +300,21 @@ footer strong{color:var(--gold)}
   </div>
 
   <div class="panel">
+
+    <!-- BIG WINNING NUMBER -->
+    <div id="winnerCard" class="winner-card">
+      <div class="winner-label">TODAY'S FIRST PRIZE WINNER</div>
+      <div id="winnerNumber" class="winner-number"></div>
+      <div id="winnerAmount" class="winner-amount"></div>
+      <div class="winner-prize">★ FIRST PRIZE ★</div>
+      <div id="winnerName" class="winner-name"></div>
+    </div>
+
+    <!-- OFFICIAL RESULT IMAGE -->
     <div id="imageArea" class="empty loading">
       Loading result image...
     </div>
+
   </div>
 
   <!-- ADVERTISEMENT 300x250 -->
@@ -286,8 +359,10 @@ let lastImageKey = "";
 
 const imageArea = document.getElementById("imageArea");
 const connection = document.getElementById("connection");
+const winnerCard = document.getElementById("winnerCard");
 
 function getISTParts(){
+
   const parts = new Intl.DateTimeFormat("en-GB",{
     timeZone:IST_ZONE,
     year:"numeric",
@@ -299,16 +374,21 @@ function getISTParts(){
   }).formatToParts(new Date());
 
   const values = {};
+
   parts.forEach(p => values[p.type] = p.value);
+
   return values;
 }
 
 function getISTDate(){
+
   const p = getISTParts();
+
   return `${p.day}-${p.month}-${p.year}`;
 }
 
 function getYesterdayDate(){
+
   const p = getISTParts();
 
   const yesterday = new Date(Date.UTC(
@@ -325,37 +405,60 @@ function getYesterdayDate(){
 }
 
 function isBeforeOnePM(){
+
   return Number(getISTParts().hour) < 13;
 }
 
+/* CHECK RESULT IMAGE */
+
 function getImageUrl(item, expectedDate){
-  if(!item || item.success !== true || !item.data) return "";
+
+  if(!item || item.success !== true || !item.data){
+    return "";
+  }
 
   const data = item.data;
 
-  if(data.date !== expectedDate) return "";
+  if(data.date !== expectedDate){
+    return "";
+  }
 
-  if(String(data.status || "").toLowerCase() === "upcoming"){
+  if(String(data.status || "").toLowerCase() !== "published"){
     return "";
   }
 
   const url = data.files && data.files.jpg;
 
-  if(typeof url !== "string" || !url.trim()) return "";
+  if(typeof url !== "string" || !url.trim()){
+    return "";
+  }
 
   try{
+
     const parsed = new URL(url);
-    if(parsed.protocol !== "https:" && parsed.protocol !== "http:"){
+
+    if(
+      parsed.protocol !== "https:" &&
+      parsed.protocol !== "http:"
+    ){
       return "";
     }
+
     return parsed.href;
+
   }catch(error){
+
     return "";
   }
 }
 
-function getSelectedImage(){
-  if(!allData) return null;
+/* GET TODAY OR YESTERDAY RESULT */
+
+function getSelectedResult(){
+
+  if(!allData){
+    return null;
+  }
 
   const today = getISTDate();
   const yesterday = getYesterdayDate();
@@ -364,11 +467,15 @@ function getSelectedImage(){
   const history = allData.history || {};
 
   if(allData.date === today){
+
     const todayItem = results[activeSlot];
+
     const todayImage = getImageUrl(todayItem,today);
 
     if(todayImage){
+
       return {
+        item:todayItem,
         url:todayImage,
         date:today,
         source:"today"
@@ -377,6 +484,7 @@ function getSelectedImage(){
   }
 
   if(isBeforeOnePM()){
+
     const oldItem =
       (history[yesterday] && history[yesterday][activeSlot]) ||
       (
@@ -390,7 +498,9 @@ function getSelectedImage(){
     const oldImage = getImageUrl(oldItem,yesterday);
 
     if(oldImage){
+
       return {
+        item:oldItem,
         url:oldImage,
         date:yesterday,
         source:"history"
@@ -401,23 +511,90 @@ function getSelectedImage(){
   return null;
 }
 
-function showEmpty(message){
-  imageArea.innerHTML =
-    '<div class="empty">' + message + '</div>';
-  lastImageKey = "";
-}
+/* SHOW WINNING NUMBER */
 
-function renderImage(){
-  const selected = getSelectedImage();
+function renderWinner(item){
 
-  if(!selected){
-    showEmpty("Result image is not available yet.");
+  const data = item && item.data;
+
+  if(
+    !data ||
+    String(data.status || "").toLowerCase() !== "published"
+  ){
+
+    winnerCard.classList.remove("visible");
     return;
   }
 
+  const first = data.first;
+
+  if(!first || typeof first !== "object"){
+
+    winnerCard.classList.remove("visible");
+    return;
+  }
+
+  const series = String(first.series || "").trim();
+  const number = String(first.number || "").trim();
+  const amount = Number(first.amount);
+
+  if(!series || !number || !Number.isFinite(amount) || amount <= 0){
+
+    winnerCard.classList.remove("visible");
+    return;
+  }
+
+  document.getElementById("winnerNumber").textContent =
+    series + " " + number;
+
+  document.getElementById("winnerAmount").textContent =
+    "₹" + new Intl.NumberFormat("en-IN").format(amount);
+
+  document.getElementById("winnerName").textContent =
+    data.name || "Official Lottery Result";
+
+  winnerCard.classList.add("visible");
+}
+
+/* EMPTY MESSAGE */
+
+function showEmpty(message){
+
+  winnerCard.classList.remove("visible");
+
+  imageArea.innerHTML = "";
+
+  const div = document.createElement("div");
+  div.className = "empty";
+  div.textContent = message;
+
+  imageArea.appendChild(div);
+
+  lastImageKey = "";
+}
+
+/* RENDER RESULT */
+
+function renderImage(){
+
+  const selected = getSelectedResult();
+
+  if(!selected){
+
+    winnerCard.classList.remove("visible");
+
+    showEmpty("Result image is not available yet.");
+
+    return;
+  }
+
+  renderWinner(selected.item);
+
   const imageKey = selected.date + "|" + selected.url;
 
-  if(imageKey === lastImageKey) return;
+  if(imageKey === lastImageKey){
+    return;
+  }
 
   lastImageKey = imageKey;
 
@@ -427,12 +604,14 @@ function renderImage(){
   wrapper.className = "image-wrap";
 
   const img = document.createElement("img");
+
   img.className = "result-image";
-  img.alt = "KR KHAN Lottery Result Image";
+  img.alt = "KR KHAN Official Lottery Result Image";
   img.loading = "eager";
   img.src = selected.url;
 
   img.onerror = function(){
+
     showEmpty("Result image could not be loaded.");
   };
 
@@ -440,23 +619,29 @@ function renderImage(){
   imageArea.appendChild(wrapper);
 }
 
+/* LOAD JSON */
+
 async function loadResults(){
+
   connection.textContent = "● Updating...";
   connection.className = "loading";
 
   try{
+
     const response = await fetch(
       API_URL + "?t=" + Date.now(),
       {cache:"no-store"}
     );
 
     if(!response.ok){
+
       throw new Error("HTTP Error " + response.status);
     }
 
     const data = await response.json();
 
     if(!data || !data.results){
+
       throw new Error("Invalid results.json");
     }
 
@@ -481,41 +666,57 @@ async function loadResults(){
     renderImage();
 
   }catch(error){
+
     connection.textContent = "● Connection Error";
     connection.className = "error";
 
     if(!allData){
-      showEmpty("Unable to load result image. Please try again later.");
+
+      showEmpty(
+        "Unable to load result image. Please try again later."
+      );
     }
   }
 }
 
-// Slot selection
+/* SLOT SELECTION */
+
 document.querySelectorAll(".tab").forEach(button => {
+
   button.addEventListener("click",function(){
+
     document.querySelectorAll(".tab").forEach(tab => {
       tab.classList.remove("active");
     });
 
     this.classList.add("active");
+
     activeSlot = this.dataset.slot;
+
     lastImageKey = "";
+
     renderImage();
   });
 });
 
-// Automatic refresh
+/* AUTO REFRESH */
+
 loadResults();
+
 setInterval(loadResults,REFRESH_INTERVAL);
 
-// Check Indian date and 1 PM boundary every 10 seconds
+/* CHECK IST DATE AND 1 PM BOUNDARY */
+
 setInterval(() => {
+
   document.getElementById("dateText").textContent =
     "Today's Date: " + getISTDate() + " (IST)";
 
   renderImage();
+
 },10000);
 
 </script>
+
 </body>
 </html>
