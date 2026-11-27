@@ -50,5 +50,6 @@
       "statusCode": 200,
       "statusText": "OK"
     }
-  }
+  },
+  "history": {}
 }
