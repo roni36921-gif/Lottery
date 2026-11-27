@@ -27,7 +27,29 @@
       "statusText": "OK"
     },
     "6pm": {
-      "error": "HTTP Error 429: Too Many Requests"
+      "success": true,
+      "data": {
+        "lottery": "dear",
+        "slot": "6pm",
+        "date": "27-11-2026",
+        "scheme": null,
+        "name": null,
+        "draw_no": null,
+        "draw_time": "18:00 IST",
+        "status": "upcoming",
+        "ticket_format": "DDL5",
+        "first": null,
+        "prizes": [],
+        "files": {},
+        "video": {
+          "id": "yVHYV2x5Sms",
+          "watch": "https://www.youtube.com/watch?v=yVHYV2x5Sms",
+          "embed": "https://www.youtube.com/embed/yVHYV2x5Sms"
+        },
+        "page": "https://lottery.sambad.com/"
+      },
+      "statusCode": 200,
+      "statusText": "OK"
     },
     "8pm": {
       "success": true,
