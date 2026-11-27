@@ -5,18 +5,27 @@ on:
     - cron: "35 7 * * *"
     - cron: "35 12 * * *"
     - cron: "35 14 * * *"
+
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: lottery-result-update
+  cancel-in-progress: false
+
 jobs:
   update-results:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    timeout-minutes: 5
 
-      - uses: actions/setup-python@v5
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -32,3 +41,4 @@ jobs:
           git add results.json
           git diff --cached --quiet || git commit -m "Update Lottery Results"
           git push
+          
