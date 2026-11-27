@@ -8,162 +8,120 @@ from zoneinfo import ZoneInfo
 
 TOKEN = os.environ["LOTTERY_API_KEY"]
 RESULT_FILE = "results.json"
-IST = ZoneInfo("Asia/Kolkata")
+API_URL = "https://api.sambad.com/v2/dear/result"
 
-today = datetime.now(IST)
-date_text = today.strftime("%d-%m-%Y")
+now = datetime.now(ZoneInfo("Asia/Kolkata"))
+today = now.strftime("%d-%m-%Y")
+
+SLOTS = ["1pm", "6pm", "8pm"]
 
 
-def is_published(item):
-    if not isinstance(item, dict):
-        return False
+def load_results():
+    if os.path.exists(RESULT_FILE):
+        try:
+            with open(RESULT_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, dict):
+                    return data
+        except Exception as error:
+            print("JSON load error:", error)
 
-    if not item.get("success"):
+    return {}
+
+
+def has_image(item):
+    if not isinstance(item, dict) or not item.get("success"):
         return False
 
     data = item.get("data") or {}
+    files = data.get("files") or {}
 
-    if data.get("status") == "upcoming":
-        return False
-
-    return bool(
-        data.get("first")
-        or data.get("prizes")
-        or data.get("files")
+    return (
+        data.get("status") != "upcoming"
+        and isinstance(files, dict)
+        and bool(files.get("jpg"))
     )
 
 
-def get_result_date(item, fallback_date):
-    if isinstance(item, dict):
-        data = item.get("data") or {}
-        return data.get("date") or fallback_date
-    return fallback_date
+def fetch_slot(slot):
+    params = urllib.parse.urlencode({
+        "date": today,
+        "slot": slot,
+        "access-token": TOKEN
+    })
 
-
-# Select the scheduled slot
-hour = today.hour
-
-if hour < 15:
-    slot = "1pm"
-elif hour < 19:
-    slot = "6pm"
-else:
-    slot = "8pm"
-
-
-# Load existing JSON
-if os.path.exists(RESULT_FILE):
-    try:
-        with open(RESULT_FILE, "r", encoding="utf-8") as f:
-            results = json.load(f)
-    except Exception:
-        results = {}
-else:
-    results = {}
-
-if not isinstance(results, dict):
-    results = {}
-
-if not isinstance(results.get("results"), dict):
-    results["results"] = {}
-
-if not isinstance(results.get("history"), dict):
-    results["history"] = {}
-
-
-# Archive existing results before changing the date
-previous_date = results.get("date")
-
-for old_slot, old_item in list(results["results"].items()):
-    if not is_published(old_item):
-        continue
-
-    archive_date = get_result_date(old_item, previous_date)
-
-    if archive_date:
-        results["history"].setdefault(archive_date, {})
-        results["history"][archive_date][old_slot] = old_item
-
-
-# If date changed, start a fresh current-day result list
-if previous_date != date_text:
-    results["results"] = {}
-
-
-# Keep today's previous published result
-old_result = results["results"].get(slot)
-
-
-# Prepare API request
-params = urllib.parse.urlencode({
-    "date": date_text,
-    "slot": slot,
-    "access-token": TOKEN
-})
-
-url = "https://api.sambad.com/v2/dear/result?" + params
-
-
-try:
     request = urllib.request.Request(
-        url,
+        API_URL + "?" + params,
         headers={"User-Agent": "Mozilla/5.0"}
     )
 
     with urllib.request.urlopen(request, timeout=30) as response:
-        new_result = json.loads(response.read())
+        result = json.loads(response.read().decode("utf-8"))
 
-    if not isinstance(new_result, dict):
+    if not isinstance(result, dict):
         raise ValueError("Invalid API response")
 
-    if is_published(new_result):
-
-        # Save today's published result
-        results["results"][slot] = new_result
-
-        # Also save a permanent date-wise history copy
-        results["history"].setdefault(date_text, {})
-        results["history"][date_text][slot] = new_result
-
-        print(f"{slot}: Published result saved in current and history")
-
-    elif is_published(old_result):
-
-        # Never replace a published result with upcoming data
-        print(f"{slot}: Keeping today's previous published result")
-
-    elif new_result.get("success"):
-
-        # Save upcoming data for today's slot
-        results["results"][slot] = new_result
-
-        print(f"{slot}: Upcoming result saved")
-
-    else:
-        print(f"{slot}: API did not return success")
+    return result
 
 
-except Exception as error:
-    print(f"{slot}: API error: {error}")
+results = load_results()
 
-    # Keep existing published data safe
-    if is_published(old_result):
-        print(f"{slot}: Previous published result preserved")
+if not isinstance(results.get("history"), dict):
+    results["history"] = {}
 
+if not isinstance(results.get("results"), dict):
+    results["results"] = {}
 
-# Update current date
-results["date"] = date_text
+history = results["history"]
+current = results["results"]
 
+# Archive old published images before starting a new date.
+old_date = results.get("date")
 
-# Save JSON safely
-temp_file = RESULT_FILE + ".tmp"
+if old_date and old_date != today:
+    old_items = current.copy()
 
-with open(temp_file, "w", encoding="utf-8") as f:
+    for slot, item in old_items.items():
+        if slot in SLOTS and has_image(item):
+            history.setdefault(old_date, {})
+            history[old_date][slot] = item
+
+    current = {}
+    results["results"] = current
+
+# Fetch all three slots without deleting saved images on errors.
+for slot in SLOTS:
+    old_item = current.get(slot)
+
+    try:
+        new_item = fetch_slot(slot)
+
+        if has_image(new_item):
+            current[slot] = new_item
+            print(slot, "New result image saved")
+
+        elif has_image(old_item):
+            print(slot, "Keeping existing image")
+
+        elif new_item.get("success"):
+            current[slot] = new_item
+            print(slot, "No published image yet")
+
+        else:
+            print(slot, "API did not return success")
+
+    except Exception as error:
+        print(slot, "API error:", error)
+
+        # Keep the existing result if the API fails.
+        if old_item is None:
+            current[slot] = {"error": str(error)}
+
+results["date"] = today
+results["results"] = current
+results["history"] = history
+
+with open(RESULT_FILE, "w", encoding="utf-8") as f:
     json.dump(results, f, indent=2, ensure_ascii=False)
 
-os.replace(temp_file, RESULT_FILE)
-
-print("Automatic lottery result update completed!")
-print("Current date:", date_text)
-print("Updated slot:", slot)
-print("History dates:", len(results["history"]))
+print("All three slots checked.")
