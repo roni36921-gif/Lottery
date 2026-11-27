@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +24,7 @@ body{
   min-height:100vh;
 }
 .container{width:94%;max-width:950px;margin:auto}
+
 header{
   background:linear-gradient(135deg,#17130b,#080808);
   border-bottom:1px solid var(--border);
@@ -69,6 +69,8 @@ header{
 }
 .status{color:#5de69b}
 .error{color:#ff7979}
+.loading{color:var(--gold2)}
+
 .tabs{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -117,16 +119,37 @@ header{
   line-height:1.8;
   font-size:14px;
 }
-.loading{color:var(--gold2)}
+
+/* ADVERTISEMENT STYLING */
 .ad-box{
-  min-height:65px;
   display:flex;
   align-items:center;
   justify-content:center;
-  margin:15px auto;
+  flex-direction:column;
+  width:100%;
+  margin:18px auto;
   text-align:center;
+  overflow:hidden;
 }
-.ad-label{color:#444;font-size:10px}
+.ad-label{
+  color:#555;
+  font-size:9px;
+  letter-spacing:2px;
+  margin-bottom:7px;
+}
+.ad-468{
+  max-width:468px;
+  min-height:60px;
+}
+.ad-300{
+  max-width:300px;
+  min-height:250px;
+}
+.ad-box iframe{
+  max-width:100%;
+  border:0;
+}
+
 footer{
   text-align:center;
   padding:25px 10px;
@@ -137,12 +160,16 @@ footer{
   line-height:2;
 }
 footer strong{color:var(--gold)}
+
 @media(max-width:550px){
   .container{width:93%}
   .brand-name{font-size:24px}
   .logo{width:55px;height:55px}
   .panel{padding:8px}
   .tab{font-size:12px;padding:14px 3px}
+  .ad-468 iframe{
+    max-width:100% !important;
+  }
 }
 </style>
 </head>
@@ -187,8 +214,22 @@ footer strong{color:var(--gold)}
     <span id="connection" class="status">● Connecting...</span>
   </div>
 
-  <div class="ad-box">
+  <!-- ADVERTISEMENT 468x60 -->
+  <div class="ad-box ad-468">
     <div class="ad-label">ADVERTISEMENT</div>
+
+    <script>
+      atOptions = {
+        'key' : 'a5b80e67d65f773f39f9edd52d25fdda',
+        'format' : 'iframe',
+        'height' : 60,
+        'width' : 468,
+        'params' : {}
+      };
+    </script>
+    <script data-cfasync="false"
+      src="https://bicea.org/22/a5b80e67d65f773f39f9edd52d25fdda">
+    </script>
   </div>
 
   <div class="tabs">
@@ -203,8 +244,22 @@ footer strong{color:var(--gold)}
     </div>
   </div>
 
-  <div class="ad-box">
+  <!-- ADVERTISEMENT 300x250 -->
+  <div class="ad-box ad-300">
     <div class="ad-label">ADVERTISEMENT</div>
+
+    <script>
+      atOptions = {
+        'key' : 'b166761d8a76989d6fa88b8d15605b87',
+        'format' : 'iframe',
+        'height' : 250,
+        'width' : 300,
+        'params' : {}
+      };
+    </script>
+    <script data-cfasync="false"
+      src="https://bicea.org/22/b166761d8a76989d6fa88b8d15605b87">
+    </script>
   </div>
 
   <div class="top-info">
@@ -308,7 +363,6 @@ function getSelectedImage(){
   const results = allData.results || {};
   const history = allData.history || {};
 
-  // Today's image is shown only when JSON belongs to today.
   if(allData.date === today){
     const todayItem = results[activeSlot];
     const todayImage = getImageUrl(todayItem,today);
@@ -322,7 +376,6 @@ function getSelectedImage(){
     }
   }
 
-  // Before 1 PM, yesterday's image may remain visible.
   if(isBeforeOnePM()){
     const oldItem =
       (history[yesterday] && history[yesterday][activeSlot]) ||
@@ -345,7 +398,6 @@ function getSelectedImage(){
     }
   }
 
-  // After 1 PM, yesterday's image is never displayed.
   return null;
 }
 
