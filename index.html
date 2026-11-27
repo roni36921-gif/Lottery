@@ -5,83 +5,383 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090d18">
-<title>KR KHAN - Lottery Sambad</title>
+<title>KR KHAN | Lottery Sambad</title>
 
 <style>
+:root{
+ --bg:#080d18;
+ --panel:#121c2d;
+ --panel2:#19263a;
+ --gold:#f4bd55;
+ --gold2:#d99b32;
+ --text:#f7f8fc;
+ --muted:#98a8bd;
+ --border:#293951;
+ --green:#65d995;
+ --red:#ff7777;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{
+ background:var(--bg);
+ color:var(--text);
  font-family:Arial,sans-serif;
- background:#090d18;color:#fff;padding:15px;
+ padding:14px;
+ min-height:100vh;
 }
-.container{max-width:850px;margin:auto}
-header{text-align:center;padding:24px 10px}
-.logo{font-size:32px;font-weight:900;color:#f5c45e}
-.subtitle{color:#aab2c4;margin-top:8px;font-size:13px}
-.date{color:#f5c45e;margin-top:12px;font-size:14px}
+button,input{font:inherit}
+button{cursor:pointer}
+.container{max-width:900px;margin:auto}
 
+header{
+ text-align:center;
+ padding:25px 10px 20px;
+}
+.logo{
+ font-size:34px;
+ font-weight:1000;
+ letter-spacing:2px;
+ background:linear-gradient(120deg,#fff1b5,#f4bd55,#b77921);
+ -webkit-background-clip:text;
+ background-clip:text;
+ color:transparent;
+}
+.subtitle{
+ color:var(--muted);
+ font-size:12px;
+ letter-spacing:2px;
+ margin-top:9px;
+}
+.date{
+ color:var(--gold);
+ font-size:13px;
+ margin-top:13px;
+}
+.live{
+ display:inline-flex;
+ align-items:center;
+ gap:7px;
+ margin-top:13px;
+ background:#153426;
+ color:#8af0ad;
+ padding:7px 13px;
+ border-radius:30px;
+ font-size:11px;
+ font-weight:bold;
+}
+.dot{
+ width:7px;height:7px;
+ background:#48e58b;
+ border-radius:50%;
+ box-shadow:0 0 10px #48e58b;
+}
 .ad-box{
- width:100%;display:flex;justify-content:center;
- align-items:center;overflow:hidden;margin:16px auto;
+ width:100%;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ overflow:hidden;
+ margin:17px auto;
  min-height:60px;
 }
 .ad-banner{max-width:100%}
 
-.tabs{display:flex;gap:10px;margin:18px 0}
-.tab{
- flex:1;padding:14px 5px;border:1px solid #30394d;
- background:#151d2d;color:white;border-radius:10px;
- font-weight:bold;cursor:pointer;
+.dashboard{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin:20px 0;
 }
-.tab.active{background:#d99d35;color:#111}
+.stat{
+ background:linear-gradient(145deg,#17263c,#101a2b);
+ border:1px solid var(--border);
+ padding:14px 8px;
+ text-align:center;
+ border-radius:13px;
+}
+.stat strong{
+ display:block;
+ color:var(--gold);
+ font-size:20px;
+ margin-bottom:5px;
+}
+.stat small{
+ color:var(--muted);
+ font-size:10px;
+}
+
+.tabs{
+ display:flex;
+ gap:9px;
+ margin:18px 0;
+}
+.tab{
+ flex:1;
+ padding:14px 5px;
+ border:1px solid var(--border);
+ background:var(--panel);
+ color:white;
+ border-radius:11px;
+ font-weight:bold;
+ transition:.2s;
+}
+.tab.active{
+ background:linear-gradient(135deg,#f5ce7b,#d7962e);
+ color:#111;
+ border-color:var(--gold);
+ box-shadow:0 4px 18px #d99d3530;
+}
+
+.search-area{
+ position:relative;
+ margin:15px 0;
+}
+.search-area input{
+ width:100%;
+ padding:15px 45px 15px 16px;
+ background:var(--panel);
+ border:1px solid var(--border);
+ border-radius:12px;
+ color:white;
+ outline:none;
+}
+.search-area input:focus{
+ border-color:var(--gold);
+}
+.search-icon{
+ position:absolute;
+ right:15px;
+ top:13px;
+ font-size:20px;
+}
 
 .card{
- background:#141c2b;border:1px solid #29354b;
- border-radius:15px;padding:18px;margin-bottom:16px;
+ background:linear-gradient(145deg,#162338,#111a29);
+ border:1px solid var(--border);
+ border-radius:17px;
+ padding:18px;
+ margin-bottom:16px;
+ box-shadow:0 8px 25px #0003;
 }
-.card h2{font-size:20px;margin-bottom:12px}
-.status{color:#8ee0a4;font-size:13px;margin-bottom:15px}
+.card h2{
+ font-size:20px;
+ margin-bottom:10px;
+}
+.status{
+ color:var(--green);
+ font-size:12px;
+ margin-bottom:16px;
+}
 
 .first{
- text-align:center;background:#202b40;
- border:1px solid #b98c3d;border-radius:12px;
- padding:20px;margin-bottom:18px;
+ text-align:center;
+ background:linear-gradient(145deg,#293750,#17243a);
+ border:1px solid #b98c3d;
+ border-radius:15px;
+ padding:23px 12px;
+ margin-bottom:20px;
+ position:relative;
+ overflow:hidden;
 }
-.first small{color:#f5c45e}
-.first .number{font-size:32px;font-weight:900;margin:12px 0}
-.amount{font-size:21px;color:#f5c45e;font-weight:bold}
-
-.prize{margin-top:17px}
-.prize h3{font-size:16px;color:#f5c45e;margin-bottom:10px}
-.numbers{display:flex;flex-wrap:wrap;gap:8px}
-.number-box{
- background:#26344b;padding:9px 12px;
- border-radius:7px;font-weight:bold;font-size:14px;
-}
-.result-image{
- width:100%;height:auto;display:block;
- border-radius:10px;margin-top:14px;
- border:1px solid #39455a;
-}
-.image-title{color:#f5c45e;margin-top:22px;font-size:17px}
-.error{
- background:#3a2225;border:1px solid #91444b;
- padding:15px;border-radius:10px;color:#ffb3b3;
-}
-.info{color:#9ba9bd;font-size:12px;margin-top:10px}
-.action{
- display:inline-block;padding:11px 15px;
- background:#d99d35;color:#111;text-decoration:none;
- border-radius:8px;font-weight:bold;font-size:13px;
- margin-top:12px;margin-right:7px;
-}
-.refresh{
- display:block;width:100%;padding:13px;
- background:#202b40;color:#fff;border:1px solid #39455a;
- border-radius:10px;margin:12px 0;cursor:pointer;
+.first small{
+ color:var(--gold);
+ letter-spacing:2px;
  font-weight:bold;
 }
-footer{text-align:center;color:#718096;padding:25px;font-size:12px}
-#message{text-align:center;color:#aab2c4;padding:12px}
+.first .number{
+ font-size:clamp(27px,7vw,39px);
+ font-weight:900;
+ margin:13px 0;
+ color:white;
+ overflow-wrap:anywhere;
+}
+.amount{
+ font-size:22px;
+ color:var(--gold);
+ font-weight:bold;
+}
+.first .info{margin-top:10px}
+
+.prize{
+ margin-top:20px;
+ padding-top:15px;
+ border-top:1px solid var(--border);
+}
+.prize h3{
+ font-size:15px;
+ color:var(--gold);
+ margin-bottom:12px;
+}
+.numbers{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+}
+.number-box{
+ display:flex;
+ align-items:center;
+ gap:7px;
+ background:#263750;
+ border:1px solid #354a66;
+ padding:10px 12px;
+ border-radius:9px;
+ font-weight:bold;
+ font-size:14px;
+ cursor:pointer;
+ transition:.2s;
+}
+.number-box:active{
+ transform:scale(.95);
+ background:#b98c3d;
+ color:#111;
+}
+.copy-symbol{
+ font-size:10px;
+ color:var(--gold);
+}
+.info{
+ color:var(--muted);
+ font-size:12px;
+ margin-top:10px;
+ line-height:1.6;
+}
+.image-title{
+ color:var(--gold);
+ margin-top:22px;
+ font-size:16px;
+}
+.result-image{
+ width:100%;
+ height:auto;
+ display:block;
+ border-radius:11px;
+ margin-top:13px;
+ border:1px solid var(--border);
+}
+.action{
+ display:inline-block;
+ padding:12px 15px;
+ background:linear-gradient(135deg,#f4c66f,#d99b32);
+ color:#111;
+ text-decoration:none;
+ border-radius:9px;
+ font-weight:bold;
+ font-size:12px;
+ margin-top:12px;
+ margin-right:7px;
+ border:0;
+}
+.action.secondary{
+ background:#263750;
+ color:white;
+ border:1px solid #42536b;
+}
+.actions{
+ display:flex;
+ flex-wrap:wrap;
+ gap:7px;
+ margin-top:15px;
+}
+.actions .action{margin:0}
+
+.tools{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:9px;
+ margin:14px 0;
+}
+.tool-btn{
+ padding:13px 8px;
+ border:1px solid var(--border);
+ background:var(--panel2);
+ color:white;
+ border-radius:10px;
+ font-size:12px;
+ font-weight:bold;
+}
+.tool-btn:active{transform:scale(.98)}
+
+.refresh{
+ display:block;
+ width:100%;
+ padding:15px;
+ background:linear-gradient(135deg,#f5c66e,#d9952d);
+ color:#111;
+ border:0;
+ border-radius:12px;
+ margin:15px 0;
+ font-weight:900;
+ letter-spacing:.5px;
+}
+.refresh:disabled{opacity:.6;cursor:wait}
+
+.error{
+ background:#392329;
+ border:1px solid #91444b;
+ padding:17px;
+ border-radius:11px;
+ color:#ffb3b3;
+ line-height:1.6;
+}
+.empty{
+ background:var(--panel);
+ border:1px solid var(--border);
+ padding:25px 15px;
+ border-radius:12px;
+ text-align:center;
+ color:var(--muted);
+}
+#message{
+ text-align:center;
+ color:var(--muted);
+ padding:12px;
+ font-size:13px;
+}
+.loading{
+ display:inline-block;
+ width:17px;height:17px;
+ border:2px solid #ffffff40;
+ border-top-color:var(--gold);
+ border-radius:50%;
+ animation:spin .7s linear infinite;
+ vertical-align:middle;
+ margin-right:8px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+footer{
+ text-align:center;
+ color:#718096;
+ padding:25px 10px;
+ font-size:12px;
+ line-height:1.8;
+}
+footer strong{color:var(--gold)}
+.toast{
+ position:fixed;
+ bottom:25px;
+ left:50%;
+ transform:translateX(-50%) translateY(100px);
+ background:#f3c46a;
+ color:#111;
+ padding:12px 20px;
+ border-radius:30px;
+ font-size:13px;
+ font-weight:bold;
+ z-index:99;
+ transition:.3s;
+ box-shadow:0 5px 20px #0005;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:480px){
+ body{padding:10px}
+ .logo{font-size:29px}
+ .card{padding:14px}
+ .tab{font-size:12px;padding:13px 3px}
+ .dashboard{gap:7px}
+ .stat strong{font-size:17px}
+ .stat small{font-size:9px}
+}
 </style>
 </head>
 
@@ -89,16 +389,20 @@ footer{text-align:center;color:#718096;padding:25px;font-size:12px}
 <div class="container">
 
 <header>
- <div class="logo">KR KHAN 👈</div>
- <p class="subtitle">LOTTERY SAMBAD • LIVE RESULTS</p>
+ <div class="logo">KR KHAN</div>
+ <p class="subtitle">PREMIUM LOTTERY SAMBAD</p>
  <div class="date" id="date">Loading date...</div>
+ <div class="live">
+  <span class="dot"></span>
+  LIVE RESULT DASHBOARD
+ </div>
 </header>
 
 <!-- 468 x 60 BANNER AD -->
 <div class="ad-box">
  <div class="ad-banner">
   <script>
-   atOptions = {
+   atOptions={
     'key':'a5b80e67d65f773f39f9edd52d25fdda',
     'format':'iframe',
     'height':60,
@@ -112,6 +416,21 @@ footer{text-align:center;color:#718096;padding:25px;font-size:12px}
  </div>
 </div>
 
+<div class="dashboard">
+ <div class="stat">
+  <strong>03</strong>
+  <small>DAILY DRAWS</small>
+ </div>
+ <div class="stat">
+  <strong id="drawCount">--</strong>
+  <small>AVAILABLE RESULTS</small>
+ </div>
+ <div class="stat">
+  <strong>60s</strong>
+  <small>AUTO REFRESH</small>
+ </div>
+</div>
+
 <div class="tabs">
  <button class="tab active" data-slot="1pm">1 PM</button>
  <button class="tab" data-slot="6pm">6 PM</button>
@@ -122,7 +441,7 @@ footer{text-align:center;color:#718096;padding:25px;font-size:12px}
 <div class="ad-box" style="min-height:250px">
  <div>
   <script>
-   atOptions = {
+   atOptions={
     'key':'b166761d8a76989d6fa88b8d15605b87',
     'format':'iframe',
     'height':250,
@@ -136,45 +455,136 @@ footer{text-align:center;color:#718096;padding:25px;font-size:12px}
  </div>
 </div>
 
-<div id="result"></div>
-<div id="message">Loading results...</div>
+<div class="search-area">
+ <input id="searchInput"
+ type="search"
+ placeholder="Search lottery prize numbers..."
+ autocomplete="off">
+ <span class="search-icon">⌕</span>
+</div>
 
-<button class="refresh" onclick="loadResults()">
+<div id="result"></div>
+<div id="message">
+ <span class="loading"></span> Loading latest results...
+</div>
+
+<div class="tools">
+ <button class="tool-btn" id="shareBtn">↗ SHARE RESULT</button>
+ <button class="tool-btn" id="printBtn">▤ PRINT RESULT</button>
+</div>
+
+<button class="refresh" id="refreshBtn">
  ↻ REFRESH RESULTS
 </button>
 
+<p class="info" style="text-align:center">
+ Last updated: <span id="lastUpdated">Not updated yet</span>
+</p>
+
 <footer>
- KR KHAN 👈 | Lottery Sambad Result Viewer
- <p style="margin-top:8px">Results are displayed from the connected API data.</p>
+ <strong>KR KHAN</strong> | Lottery Sambad Result Viewer
+ <p>Results are displayed from the connected API data.</p>
+ <p>Auto refresh enabled • Every 60 seconds</p>
+ <p>Always verify official lottery results before relying on them.</p>
 </footer>
+
 </div>
+
+<div class="toast" id="toast">Copied successfully!</div>
 
 <script>
 const resultBox=document.getElementById("result");
 const message=document.getElementById("message");
 const dateBox=document.getElementById("date");
+const lastUpdated=document.getElementById("lastUpdated");
+const refreshBtn=document.getElementById("refreshBtn");
+const searchInput=document.getElementById("searchInput");
 
 let allData=null;
 let currentSlot="1pm";
+let loading=false;
+let searchTerm="";
 
 function money(value){
- return "₹"+Number(value||0).toLocaleString("en-IN");
+ const n=Number(value||0);
+ return "₹"+(Number.isFinite(n)?n:0).toLocaleString("en-IN");
 }
 
 function make(tag,cls,value){
  const el=document.createElement(tag);
  if(cls)el.className=cls;
- if(value!==undefined)el.textContent=value;
+ if(value!==undefined)el.textContent=String(value);
  return el;
 }
 
+function toast(text){
+ const box=document.getElementById("toast");
+ box.textContent=text;
+ box.classList.add("show");
+ clearTimeout(toast.timer);
+ toast.timer=setTimeout(()=>{
+  box.classList.remove("show");
+ },2000);
+}
+
+function safeUrl(url){
+ try{
+  const parsed=new URL(url,location.href);
+  if(parsed.protocol==="http:"||parsed.protocol==="https:"){
+   return parsed.href;
+  }
+ }catch(e){}
+ return null;
+}
+
 function addLink(parent,url,label){
- if(!url)return;
+ const valid=safeUrl(url);
+ if(!valid)return;
+
  const a=make("a","action",label);
- a.href=url;
+ a.href=valid;
  a.target="_blank";
  a.rel="noopener noreferrer";
  parent.appendChild(a);
+}
+
+async function copyText(value){
+ try{
+  if(navigator.clipboard&&window.isSecureContext){
+   await navigator.clipboard.writeText(String(value));
+  }else{
+   const textarea=document.createElement("textarea");
+   textarea.value=String(value);
+   textarea.style.position="fixed";
+   textarea.style.opacity="0";
+   document.body.appendChild(textarea);
+   textarea.select();
+   const ok=document.execCommand("copy");
+   textarea.remove();
+   if(!ok)throw new Error("Copy failed");
+  }
+  toast("Number copied!");
+ }catch(e){
+  toast("Unable to copy number");
+ }
+}
+
+function addNumber(parent,value){
+ const box=make("button","number-box");
+ box.type="button";
+ box.appendChild(make("span","",value));
+ box.appendChild(make("span","copy-symbol","COPY"));
+ box.addEventListener("click",()=>copyText(value));
+
+ if(searchTerm&&String(value).toLowerCase().includes(searchTerm)){
+  box.style.borderColor="var(--gold)";
+ }
+ parent.appendChild(box);
+}
+
+function showError(text){
+ resultBox.replaceChildren();
+ resultBox.appendChild(make("div","error",text));
 }
 
 function showResult(slot){
@@ -185,7 +595,6 @@ function showResult(slot){
  });
 
  resultBox.replaceChildren();
- message.textContent="";
 
  if(!allData||!allData.results){
   message.textContent="Result data not available.";
@@ -195,8 +604,11 @@ function showResult(slot){
  const item=allData.results[slot];
 
  if(!item||item.error||!item.success||!item.data){
-  resultBox.appendChild(make("div","error",
-   slot.toUpperCase()+" Result is not available yet. Please check again later."));
+  message.textContent="";
+  resultBox.appendChild(make(
+   "div","error",
+   slot.toUpperCase()+" Result is not available yet. Please check again later."
+  ));
   return;
  }
 
@@ -204,64 +616,125 @@ function showResult(slot){
  const card=make("section","card");
 
  card.appendChild(make("h2","",data.name||"Lottery Result"));
- card.appendChild(make("div","status",
-  "● "+(data.status||"Published")+" | "+(data.draw_time||slot)));
+
+ card.appendChild(make(
+  "div","status",
+  "● "+(data.status||"Published")+" | "+(data.draw_time||slot)
+ ));
 
  if(data.first){
   const first=make("div","first");
   first.appendChild(make("small","","FIRST PRIZE"));
-  first.appendChild(make("div","number",
-   (data.first.series||"")+" "+(data.first.number||"")));
+  first.appendChild(make(
+   "div","number",
+   (data.first.series||"")+" "+(data.first.number||"")
+  ));
   first.appendChild(make("div","amount",money(data.first.amount)));
-  first.appendChild(make("div","info","Draw No. "+(data.draw_no||"-")));
+  first.appendChild(make(
+   "div","info","Draw No. "+(data.draw_no||"-")
+  ));
   card.appendChild(first);
  }
 
- (data.prizes||[]).forEach(prize=>{
-  const section=make("div","prize");
-  section.appendChild(make("h3","",
-   prize.label+" - "+money(prize.amount)));
+ let visibleCount=0;
 
-  const numbers=make("div","numbers");
-  (prize.numbers||[]).forEach(number=>{
-   numbers.appendChild(make("span","number-box",number));
+ (Array.isArray(data.prizes)?data.prizes:[]).forEach(prize=>{
+  const numbers=Array.isArray(prize.numbers)?prize.numbers:[];
+  const matching=numbers.filter(n=>
+   String(n).toLowerCase().includes(searchTerm)
+  );
+
+  const label=String(prize.label||"Prize");
+
+  const firstMatches=(
+   String(data.first?.number||"").toLowerCase().includes(searchTerm)||
+   String(data.first?.series||"").toLowerCase().includes(searchTerm)
+  );
+
+  if(searchTerm&&!matching.length&&
+     !label.toLowerCase().includes(searchTerm)&&!firstMatches){
+   return;
+  }
+
+  const section=make("div","prize");
+
+  section.appendChild(make(
+   "h3","",
+   label+" - "+money(prize.amount)
+  ));
+
+  const numberArea=make("div","numbers");
+  const displayNumbers=searchTerm?matching:numbers;
+
+  displayNumbers.forEach(number=>{
+   addNumber(numberArea,number);
+   visibleCount++;
   });
 
-  section.appendChild(numbers);
+  if(numberArea.children.length){
+   section.appendChild(numberArea);
+  }
 
   if(prize.note){
    section.appendChild(make("p","info",prize.note));
   }
+
   card.appendChild(section);
  });
 
- if(data.files&&data.files.jpg){
-  card.appendChild(make("h3","image-title","OFFICIAL RESULT IMAGE"));
-
-  const img=document.createElement("img");
-  img.className="result-image";
-  img.src=data.files.jpg;
-  img.alt=data.name+" Result Image";
-  img.loading="lazy";
-  img.onerror=()=>{
-   img.replaceWith(make("p","error","Result image could not be loaded."));
-  };
-  card.appendChild(img);
+ if(searchTerm&&!visibleCount&&
+    !String(data.first?.number||"").toLowerCase().includes(searchTerm)&&
+    !String(data.first?.series||"").toLowerCase().includes(searchTerm)){
+  card.appendChild(make("div","empty","No matching prize numbers found."));
  }
 
+ if(data.files&&data.files.jpg){
+  const imageUrl=safeUrl(data.files.jpg);
+  if(imageUrl){
+   card.appendChild(make("h3","image-title","OFFICIAL RESULT IMAGE"));
+
+   const img=document.createElement("img");
+   img.className="result-image";
+   img.src=imageUrl;
+   img.alt=(data.name||"Lottery")+" Result Image";
+   img.loading="lazy";
+
+   img.onerror=()=>{
+    img.replaceWith(make("p","error","Result image could not be loaded."));
+   };
+
+   card.appendChild(img);
+  }
+ }
+
+ const actions=make("div","actions");
+
  if(data.files&&data.files.pdf){
-  addLink(card,data.files.pdf,"DOWNLOAD PDF");
+  addLink(actions,data.files.pdf,"DOWNLOAD PDF");
  }
 
  if(data.video&&data.video.watch){
-  addLink(card,data.video.watch,"WATCH DRAW VIDEO");
+  addLink(actions,data.video.watch,"WATCH DRAW VIDEO");
+ }
+
+ if(actions.children.length){
+  card.appendChild(actions);
  }
 
  resultBox.appendChild(card);
+ message.textContent="";
 }
 
 async function loadResults(){
- message.textContent="Loading latest results...";
+ if(loading)return;
+
+ loading=true;
+ refreshBtn.disabled=true;
+ refreshBtn.textContent="LOADING RESULTS...";
+
+ if(!allData){
+  message.innerHTML='<span class="loading"></span> Loading latest results...';
+ }
 
  try{
   const response=await fetch("./results.json?t="+Date.now(),{
@@ -272,28 +745,108 @@ async function loadResults(){
    throw new Error("HTTP "+response.status);
   }
 
-  allData=await response.json();
+  const json=await response.json();
+
+  if(!json||!json.results){
+   throw new Error("Invalid results.json format");
+  }
+
+  allData=json;
 
   dateBox.textContent="Result Date: "+(allData.date||"Not available");
+
+  const count=["1pm","6pm","8pm"].filter(slot=>
+   allData.results[slot]&&
+   allData.results[slot].success&&
+   allData.results[slot].data
+  ).length;
+
+  document.getElementById("drawCount").textContent=count+"/3";
+
+  lastUpdated.textContent=new Date().toLocaleTimeString("en-IN");
 
   showResult(currentSlot);
 
  }catch(error){
-  resultBox.replaceChildren();
-  message.textContent="Unable to load results. Please refresh.";
-  console.error(error);
+  console.error("Result loading error:",error);
+
+  if(!allData){
+   showError("Unable to load results. Please check your internet connection or results.json file.");
+   message.textContent="";
+  }else{
+   message.textContent="Update failed. Showing previously loaded results.";
+  }
+
+ }finally{
+  loading=false;
+  refreshBtn.disabled=false;
+  refreshBtn.textContent="↻ REFRESH RESULTS";
  }
 }
 
+// Slot selection
 document.querySelectorAll(".tab").forEach(btn=>{
  btn.addEventListener("click",()=>{
   showResult(btn.dataset.slot);
  });
 });
 
-loadResults();
+// Search
+searchInput.addEventListener("input",()=>{
+ searchTerm=searchInput.value.trim().toLowerCase();
+ if(allData)showResult(currentSlot);
+});
+
+// Refresh
+refreshBtn.addEventListener("click",loadResults);
+
+// Share
+document.getElementById("shareBtn").addEventListener("click",async()=>{
+ const text=
+ "KR KHAN Lottery Sambad\n"+
+ "Date: "+(allData?.date||"Not available")+"\n"+
+ "Draw: "+currentSlot.toUpperCase()+"\n"+
+ "Check the latest result on KR KHAN.";
+
+ try{
+  if(navigator.share){
+   await navigator.share({
+    title:"KR KHAN Lottery Result",
+    text:text
+   });
+  }else{
+   await copyText(text);
+  }
+ }catch(e){
+  if(e.name!=="AbortError")console.error(e);
+ }
+});
+
+// Print
+document.getElementById("printBtn").addEventListener("click",()=>{
+ window.print();
+});
+
+// Automatic refresh
 setInterval(loadResults,60000);
+
+// Initial loading
+loadResults();
 </script>
+
+<style>
+@media print{
+ body{background:white;color:black}
+ header,.ad-box,.tabs,.search-area,.tools,
+ .refresh,footer,.toast{display:none!important}
+ .card{background:white;color:black;box-shadow:none}
+ .status,.info{color:#333}
+ .number-box{background:#eee;color:black}
+ .first{background:#eee;color:black}
+ .first .number{color:black}
+ .amount,.prize h3{color:#8b6018}
+}
+</style>
 
 </body>
 </html>
