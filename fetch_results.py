@@ -12,7 +12,7 @@ RESULT_FILE = "results.json"
 today = datetime.now(ZoneInfo("Asia/Kolkata"))
 date_text = today.strftime("%d-%m-%Y")
 
-# Current scheduled slot
+# Select current scheduled slot
 hour = today.hour
 
 if hour < 15:
@@ -22,7 +22,7 @@ elif hour < 19:
 else:
     slot = "8pm"
 
-# Load existing results
+# Load existing results WITHOUT deleting previous dates' results
 if os.path.exists(RESULT_FILE):
     try:
         with open(RESULT_FILE, "r", encoding="utf-8") as f:
@@ -32,16 +32,17 @@ if os.path.exists(RESULT_FILE):
 else:
     results = {}
 
-# Reset only when the date changes
-if results.get("date") != date_text:
-    results = {"date": date_text, "results": {}}
-
 results.setdefault("results", {})
 
+# Keep previous published result for this slot
 old_result = results["results"].get(slot)
 
+
 def is_published(item):
-    if not isinstance(item, dict) or not item.get("success"):
+    if not isinstance(item, dict):
+        return False
+
+    if not item.get("success"):
         return False
 
     data = item.get("data") or {}
@@ -55,6 +56,7 @@ def is_published(item):
         or data.get("files")
     )
 
+
 params = urllib.parse.urlencode({
     "date": date_text,
     "slot": slot,
@@ -64,22 +66,30 @@ params = urllib.parse.urlencode({
 url = "https://api.sambad.com/v2/dear/result?" + params
 
 try:
-    request = urllib.request.Request(url)
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
 
     with urllib.request.urlopen(request, timeout=30) as response:
         new_result = json.loads(response.read())
 
-    # Do not replace an already published result with upcoming data
-    if (
-        is_published(old_result)
-        and new_result.get("success")
-        and (new_result.get("data") or {}).get("status") == "upcoming"
-    ):
+    if not isinstance(new_result, dict):
+        raise ValueError("Invalid API response")
+
+    if is_published(new_result):
+        # New published result replaces previous result
+        results["results"][slot] = new_result
+        print(f"{slot}: New published result saved")
+
+    elif is_published(old_result):
+        # Keep old image and result until new result is published
         print(f"{slot}: Keeping previous published result")
 
     elif new_result.get("success"):
+        # No previous published result; save upcoming data
         results["results"][slot] = new_result
-        print(f"{slot}: API response saved")
+        print(f"{slot}: Upcoming result saved")
 
     else:
         print(f"{slot}: API did not return success")
@@ -87,12 +97,17 @@ try:
 except Exception as error:
     print(f"{slot}: API error: {error}")
 
-    # Keep previous successful result if available
+    # Never delete previous published result on API error
     if old_result is None:
-        results["results"][slot] = {"error": str(error)}
+        results["results"][slot] = {
+            "error": str(error)
+        }
 
+# Update current date, but preserve previous results
+results["date"] = date_text
+
+# Save JSON
 with open(RESULT_FILE, "w", encoding="utf-8") as f:
     json.dump(results, f, indent=2, ensure_ascii=False)
 
-print("Lottery results update completed!")
-        
+print("Automatic lottery result update completed!")
